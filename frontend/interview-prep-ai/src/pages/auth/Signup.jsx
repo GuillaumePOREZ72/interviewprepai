@@ -1,6 +1,7 @@
 import React from 'react'
 
-const Signup = () => {
+const Signup = ({ setCurrentPage }) => {
+  
   return (
     <div>Signup</div>
   )
