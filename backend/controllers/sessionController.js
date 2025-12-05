@@ -1,8 +1,8 @@
-const Session = require("../models/Session");
-const Question = require("../models/Question");
+import Session from "../models/Session.js";
+import Question from "../models/Question.js";
 
 // Create a new session and linked questions
-exports.createSession = async (req, res) => {
+export const createSession = async (req, res) => {
   try {
     const { role, experience, topicsToFocus, description, questions } =
       req.body;
@@ -37,7 +37,7 @@ exports.createSession = async (req, res) => {
 };
 
 // Get all sessions for the logged-in user
-exports.getMySessions = async (req, res) => {
+export const getMySessions = async (req, res) => {
   try {
     const sessions = await Session.find({ user: req.user.id })
       .sort({
@@ -51,7 +51,7 @@ exports.getMySessions = async (req, res) => {
 };
 
 // Get a session by ID with populated questions
-exports.getSessionById = async (req, res) => {
+export const getSessionById = async (req, res) => {
   try {
     const session = await Session.findById(req.params.id)
       .populate({
@@ -74,7 +74,7 @@ exports.getSessionById = async (req, res) => {
 };
 
 // Delete a sessionand its questions
-exports.deleteSession = async (req, res) => {
+export const deleteSession = async (req, res) => {
   try {
     const session = await Session.findById(req.params.id);
 
