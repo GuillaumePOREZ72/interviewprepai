@@ -34,7 +34,42 @@ export const addQuestionsToSession = async (req, res) => {
 };
 
 //Pin or unpin a question
-export const togglePinQuestion = async (req, res) => {};
+export const togglePinQuestion = async (req, res) => {
+  try {
+    const question = await Question.findById(req.params.id);
+
+    if (!question) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Question not found" });
+    }
+
+    question.isPinned = !question.isPinned;
+    await question.save();
+
+    res.status(200).json({ success: true, question });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
 
 // Update a note for a question
-export const updateQuestionNote = async (req, res) => {};
+export const updateQuestionNote = async (req, res) => {
+  try {
+    const { note } = req.body;
+    const question = await Question.findById(req.params.id);
+
+    if (!question) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Question not found" });
+    }
+
+    question.note = note || "";
+    await question.save();
+
+    res.status(200).json({ success: true, question });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
