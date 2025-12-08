@@ -1,6 +1,7 @@
 import React from "react";
 import { useContext } from "react";
 import { UserContext } from "../../context/useContext";
+import Navbar from "./Navbar";
 
 const DashboardLayout = ({ children }) => {
   const { user } = useContext(UserContext);
