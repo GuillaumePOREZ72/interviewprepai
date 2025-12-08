@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "../../components/inputs/Input";
+import SpinnerLoader from "../../components/loader/SpinnerLoader";
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
 
 const CreateSessionForm = () => {
   const [formData, setFormData] = useState({
@@ -25,13 +28,48 @@ const CreateSessionForm = () => {
   const handleCreateSession = async (e) => {
     e.preventDefault();
 
-    const { role, experience, topicsToFocus, description } = formData;
+    const { role, experience, topicsToFocus } = formData;
 
     if (!role || !experience || !topicsToFocus) {
       setError("Please fill all the required fields");
+      return;
     }
 
     setError("");
+    setIsLoading(true);
+
+    try {
+      // Call AI API to generate questons
+      const aiResponse = await axiosInstance.post(
+        API_PATHS.AI.GENERATE_QUESTIONS,
+        {
+          role,
+          experience,
+          topicsToFocus,
+          numberOfQuestions: 10,
+        }
+      );
+
+      // Should an array: [{question, answer}, ...]
+      const generatedQuestions = aiResponse.data;
+
+      const response = await axiosInstance.post(API_PATHS.SESSION.CREATE, {
+        ...formData,
+        questions: generatedQuestions,
+      });
+
+      if (response.data?.session?._id) {
+        navigate(`/interview-prep/${response.data?.session?._id}`);
+      }
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <div className="w-[90vw] md:w-[35vw] p-7 flex flex-col justify-center">

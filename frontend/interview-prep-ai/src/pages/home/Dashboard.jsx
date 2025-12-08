@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { LuPlus } from "react-icons/lu";
 import { CARD_BG } from "../../utils/data.js";
-import toast from "react-hot-toast";
+import {toast} from "react-hot-toast";
 import moment from "moment";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
 import { useNavigate } from "react-router-dom";
