@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { LuPlus } from "react-icons/lu";
 import { CARD_BG } from "../../utils/data.js";
-import {toast} from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import moment from "moment";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance.js";
 import { API_PATHS } from "../../utils/apiPaths.js";
 import SummaryCard from "../../components/cards/SummaryCard.jsx";
-import Modal from "../../components/Modal.jsx"
+import Modal from "../../components/Modal.jsx";
 import CreateSessionForm from "./CreateSessionForm.jsx";
+import DeleteAlertContent from "../../components/DeleteAlertContent.jsx";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -31,7 +32,17 @@ const Dashboard = () => {
     }
   };
 
-  const deleteSession = async (sessionData) => {};
+  const deleteSession = async (sessionData) => {
+    try {
+      await axiosInstance.delete(API_PATHS.SESSION.DELETE(sessionData?._id));
+      toast.success("Session deleted successfully!");
+      setOpenDeleteAlert({ open: false, data: null });
+      fetchAllSessions();
+    } catch (error) {
+      console.error("Error deleting session:", error);
+      toast.error("Failed to delete session. Please try again.");
+    }
+  };
 
   useEffect(() => {
     fetchAllSessions();
@@ -77,7 +88,20 @@ const Dashboard = () => {
         hideHeader
       >
         <div>
-          <CreateSessionForm/>
+          <CreateSessionForm />
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={openDeleteAlert?.open}
+        onClick={() => setOpenDeleteAlert({ open: false, data: null })}
+        title="Delete Session"
+      >
+        <div className="">
+          <DeleteAlertContent
+            content="Are you sure you want to delete this session details? This action cannot be undone."
+            onDelete={() => deleteSession(openDeleteAlert.data)}
+          />
         </div>
       </Modal>
     </DashboardLayout>

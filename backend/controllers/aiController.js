@@ -2,6 +2,7 @@ import {
   conceptExplainPrompt,
   questionAnswerPrompt,
 } from "../utils/prompts.js";
+import { cleanAndParseJSON } from "../utils/helper.js";
 
 // Generate interview questions and answers using Groq
 const generateInterviewQuestions = async (req, res) => {
@@ -47,15 +48,7 @@ const generateInterviewQuestions = async (req, res) => {
       throw new Error(data.error?.message || "Groq API error");
     }
 
-    let rawText = data.choices[0].message.content;
-
-    // Clean the text: Remove ```json and ``` from beginning and end
-    const cleanedText = rawText
-      .replace(/^```json\s*/, "")
-      .replace(/```$/, "")
-      .trim();
-
-    const parsedData = JSON.parse(cleanedText);
+    const parsedData = cleanAndParseJSON(data.choices[0].message.content);
 
     res.status(200).json(parsedData);
   } catch (error) {
@@ -105,15 +98,7 @@ const generateConceptExplanation = async (req, res) => {
       throw new Error(data.error?.message || "Groq API error");
     }
 
-    let rawText = data.choices[0].message.content;
-
-    // Clean the text: Remove ```json and ``` from beginning and end
-    const cleanedText = rawText
-      .replace(/^```json\s*/, "")
-      .replace(/```$/, "")
-      .trim();
-
-    const parsedData = JSON.parse(cleanedText);
+    const parsedData = cleanAndParseJSON(data.choices[0].message.content);
 
     res.status(200).json(parsedData);
   } catch (error) {
