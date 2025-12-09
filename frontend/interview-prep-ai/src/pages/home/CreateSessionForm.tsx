@@ -1,31 +1,37 @@
-import React, { useState } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "../../components/inputs/Input";
 import SpinnerLoader from "../../components/loader/SpinnerLoader";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
+import { AxiosError } from "axios";
+import {
+  CreateSessionFormData,
+  Question,
+  CreateSessionResponse,
+} from "../../types";
 
 const CreateSessionForm = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<CreateSessionFormData>({
     role: "",
     experience: "",
     topicsToFocus: "",
     description: "",
   });
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   const navigate = useNavigate();
 
-  const handleChange = (key, value) => {
+  const handleChange = (key: keyof CreateSessionFormData, value: string) => {
     setFormData((prevData) => ({
       ...prevData,
       [key]: value,
     }));
   };
 
-  const handleCreateSession = async (e) => {
+  const handleCreateSession = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const { role, experience, topicsToFocus } = formData;
@@ -40,7 +46,7 @@ const CreateSessionForm = () => {
 
     try {
       // Call AI API to generate questons
-      const aiResponse = await axiosInstance.post(
+      const aiResponse = await axiosInstance.post<Question[]>(
         API_PATHS.AI.GENERATE_QUESTIONS,
         {
           role,
@@ -53,17 +59,18 @@ const CreateSessionForm = () => {
       // Should an array: [{question, answer}, ...]
       const generatedQuestions = aiResponse.data;
 
-      const response = await axiosInstance.post(API_PATHS.SESSION.CREATE, {
+      const response = await axiosInstance.post<CreateSessionResponse>(API_PATHS.SESSION.CREATE, {
         ...formData,
         questions: generatedQuestions,
       });
 
       if (response.data?.session?._id) {
-        navigate(`/interview-prep/${response.data?.session?._id}`);
+        navigate(`/interview-prep/${response.data.session._id}`);
       }
     } catch (error) {
-      if (error.response && error.response.data.message) {
-        setError(error.response.data.message);
+      const axiosError = error as AxiosError<{ message: string }>;
+      if (axiosError.response?.data?.message) {
+        setError(axiosError.response.data.message);
       } else {
         setError("Something went wrong. Please try again.");
       }
@@ -95,7 +102,7 @@ const CreateSessionForm = () => {
           onChange={({ target }) => handleChange("experience", target.value)}
           label="Years of Experience"
           placeholder="(e.g., 1 year, 3 years, 5+ years, etc.)"
-          type="number"
+          type="text"
         />
 
         <Input

@@ -1,10 +1,13 @@
-import React from "react";
-import { useContext } from "react";
-import { UserContext } from "../../context/useContext";
+import { ReactNode } from "react";
+import { useUser } from "../../hooks/useUser";
 import Navbar from "./Navbar";
 
-const DashboardLayout = ({ children }) => {
-  const { user } = useContext(UserContext);
+interface DashboardLayoutProps {
+  children: ReactNode;
+}
+
+const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+  const { user } = useUser();
   return (
     <div>
       <Navbar />

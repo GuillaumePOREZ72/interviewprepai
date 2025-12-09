@@ -1,21 +1,26 @@
-import React, { useContext, useState } from "react";
+import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "../../components/inputs/Input";
 import { validateEmail } from "../../utils/helper";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
-import { UserContext } from "../../context/useContext";
+import { useUser } from "../../hooks/useUser";
+import { AxiosError } from "axios";
+import { AuthResponse } from "../../types";
 
-const Login = ({ setCurrentPage }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+interface LoginProps {
+  setCurrentPage: (page: "login" | "signup") => void;
+}
 
-  const { updateUser } = useContext(UserContext);
+const Login = ({ setCurrentPage }: LoginProps) => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
+  const { updateUser } = useUser();
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!validateEmail(email)) {
@@ -32,10 +37,13 @@ const Login = ({ setCurrentPage }) => {
 
     // Login API call
     try {
-      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
-        email,
-        password,
-      });
+      const response = await axiosInstance.post<AuthResponse>(
+        API_PATHS.AUTH.LOGIN,
+        {
+          email,
+          password,
+        }
+      );
 
       const { token } = response.data;
 
@@ -45,10 +53,11 @@ const Login = ({ setCurrentPage }) => {
         navigate("/dashboard");
       }
     } catch (error) {
-      if (error.response && error.response.data.message) {
-        setError(error.response.data.message);
+      const axiosError = error as AxiosError<{ message: string }>;
+      if (axiosError.response?.data?.message) {
+        setError(axiosError.response.data.message);
       } else {
-        setError("Something went wrong. PLease try again.");
+        setError("Something went wrong. Please try again.");
       }
     }
   };
@@ -66,7 +75,7 @@ const Login = ({ setCurrentPage }) => {
           onChange={({ target }) => setEmail(target.value)}
           label="Email Address"
           placeholder="johndoe@example.com"
-          type="text"
+          type="email"
         />
 
         <Input

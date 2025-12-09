@@ -1,26 +1,31 @@
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "../../components/inputs/Input";
 import ProfilePhotoSelector from "../../components/inputs/ProfilePhotoSelector";
 import { validateEmail } from "../../utils/helper";
-import { useContext } from "react";
-import { UserContext } from "../../context/useContext";
+import { useUser } from "../../hooks/useUser";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import uploadImage from "../../utils/uploadImage";
+import { AuthResponse } from "../../types";
+import { AxiosError } from "axios";
 
-const Signup = ({ setCurrentPage }) => {
-  const [profilePic, setProfilePic] = useState(null);
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+interface SignupProps {
+  setCurrentPage: (page: "login" | "signup") => void;
+}
 
-  const [error, setError] = useState("");
+const Signup = ({ setCurrentPage }: SignupProps) => {
+  const [profilePic, setProfilePic] = useState<File | null>(null);
+  const [fullName, setFullName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
-  const { updateUser } = useContext(UserContext);
+  const [error, setError] = useState<string>("");
+
+  const { updateUser } = useUser();
   const navigate = useNavigate();
 
-  const handleSignup = async (e) => {
+  const handleSignup = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     let profileImageUrl = "";
@@ -49,14 +54,14 @@ const Signup = ({ setCurrentPage }) => {
         profileImageUrl = imgUploadRes.imageUrl || "";
       }
 
-      const response = axiosInstance.post(API_PATHS.AUTH.REGISTER, {
+      const response = await axiosInstance.post<AuthResponse>(API_PATHS.AUTH.REGISTER, {
         name: fullName,
         email,
         password,
         profileImageUrl,
       });
-      4;
-      const { token } = (await response).data;
+
+      const { token, user } = response.data;
 
       if (token) {
         localStorage.setItem("token", token);
@@ -64,8 +69,9 @@ const Signup = ({ setCurrentPage }) => {
         navigate("/dashboard");
       }
     } catch (error) {
-      if (error.response && error.response.data.message) {
-        setError(error.response.data.message);
+      const axiosError = error as AxiosError<{ message: string }>;
+      if (axiosError.response?.data.message) {
+        setError(axiosError.response.data.message);
       } else {
         setError("Something went wrong. Please try again.");
       }
@@ -118,6 +124,7 @@ const Signup = ({ setCurrentPage }) => {
         <p className="text-[13px] text-slate-800 mt-3">
           Already have an account?{" "}
           <button
+            type="button"
             className="font-medium text-primary underline cursor-pointer"
             onClick={() => setCurrentPage("login")}
           >
