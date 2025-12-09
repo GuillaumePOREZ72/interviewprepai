@@ -134,7 +134,7 @@ const InterviewPrep = () => {
     }
 
     return () => {};
-  }, [sessionId]);
+  }, []);
 
   return (
     <DashboardLayout>
@@ -225,7 +225,7 @@ const InterviewPrep = () => {
               </p>
             )}
             {isLoading && <SkeletonLoader />}
-            {isLoading && explanation && (
+            {!isLoading && explanation && (
               <AIResponsePreview content={explanation?.explanation} />
             )}
           </Drawer>
