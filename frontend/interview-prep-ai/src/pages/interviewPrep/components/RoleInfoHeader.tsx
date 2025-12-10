@@ -1,11 +1,19 @@
+interface RoleInfoHeaderProps {
+  role: string;
+  topicsToFocus: string;
+  experience: number;
+  questions: number;
+  description?: string;
+  lastUpdated: string;
+}
+
 const RoleInfoHeader = ({
   role,
   topicsToFocus,
   experience,
   questions,
-  description,
   lastUpdated,
-}) => {
+}: RoleInfoHeaderProps) => {
   return (
     <div className="bg-white relative">
       <div className="container mx-auto px-10 md:px-0">
@@ -25,7 +33,7 @@ const RoleInfoHeader = ({
 
           <div className="flex items-center gap-3 mt-4">
             <div className="text-[10px] font-semibold text-white bg-black px-3 py-1 rounded-full">
-              Experience: {experience} {experience == 1 ? "Year" : "Years"}
+              Experience: {experience} {experience === 1 ? "Year" : "Years"}
             </div>
             <div className="text-[10px] font-semibold text-white bg-black px-3 py-1 rounded-full">
               {questions} Q&A
@@ -38,8 +46,8 @@ const RoleInfoHeader = ({
         <div className="w-[40vw] md:w-[30vw] h-[200px] flex items-center justify-center bg-white overflow-hidden absolute top-0 right-0">
           <div className="w-16 h-16 bg-lime-400 blur-[65px] animate-blob1" />
           <div className="w-16 h-16 bg-teal-400 blur-[65px] animate-blob2" />
-          <div className="w-16 h-16 bg-cyan-300 blur-[45px] animate-blob3 " />
-          <div className="w-16 h-16 bg-fuschia-200 blur-[45px] animate-blob1" />
+          <div className="w-16 h-16 bg-cyan-300 blur-[45px] animate-blob3" />
+          <div className="w-16 h-16 bg-fuchsia-200 blur-[45px] animate-blob1" />
         </div>
       </div>
     </div>

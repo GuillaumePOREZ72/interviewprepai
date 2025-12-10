@@ -7,12 +7,11 @@ import { LuSparkles } from "react-icons/lu";
 import Login from "./auth/Login";
 import Signup from "./auth/Signup";
 import Modal from "../components/Modal";
-import { useContext } from "react";
-import { UserContext } from "../context/useContext";
+import { useUser } from "../hooks/useUser";
 import ProfileInfoCard from "../components/cards/ProfileInfoCard";
 
 const LandingPage = () => {
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
   const navigate = useNavigate();
 
   const [openAuthModal, setOpenAuthModal] = useState(false);
