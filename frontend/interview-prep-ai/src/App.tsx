@@ -1,36 +1,66 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
-import Login from "./pages/auth/Login";
-import Signup from "./pages/auth/Signup";
 import LandingPage from "./pages/LandingPage";
 import InterviewPrep from "./pages/interviewPrep/components/InterviewPrep";
 import Dashboard from "./pages/home/Dashboard";
 import UserProvider from "./context/useContext";
+import { useUser } from "./hooks/useUser";
+import { ReactNode } from "react";
+
+interface ProtectedRoutesProps {
+  children: ReactNode;
+}
+
+const ProtectedRoutes = ({ children }: ProtectedRoutesProps) => {
+  const { user, loading } = useUser();
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
+  }
+
+  return user ? <>{children}</> : <Navigate to="/" replace />;
+};
 
 const App = () => {
   return (
     <UserProvider>
-      <div>
-        <Router>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
+      <Router>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
 
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route
-              path="/interview-prep/:sessionId"
-              element={<InterviewPrep />}
-            />
-          </Routes>
-        </Router>
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoutes>
+                <Dashboard />
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path="/interview-prep/:sessionId"
+            element={
+              <ProtectedRoutes>
+                <InterviewPrep />
+              </ProtectedRoutes>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
 
         <Toaster
           toastOptions={{ className: "", style: { fontSize: "13px" } }}
         />
-      </div>
+      </Router>
     </UserProvider>
   );
 };

@@ -10,12 +10,14 @@ import Modal from "../components/Modal";
 import { useUser } from "../hooks/useUser";
 import ProfileInfoCard from "../components/cards/ProfileInfoCard";
 
+type AuthPage = "login" | "signup";
+
 const LandingPage = () => {
   const { user } = useUser();
   const navigate = useNavigate();
 
-  const [openAuthModal, setOpenAuthModal] = useState(false);
-  const [currentPage, setCurrentPage] = useState("login");
+  const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<AuthPage>("login");
 
   const handleCTA = () => {
     if (!user) {
@@ -40,7 +42,7 @@ const LandingPage = () => {
               <ProfileInfoCard />
             ) : (
               <button
-                className="bg-linear-to-r from-primary to-secondary text-sm font-semibold text-white px-7 py-2.5 rounded-full hover:bg-black hover:text-white border border-white transition-colors cursor-pointer"
+                className="bg-linear-to-r from-primary to-[#e99a4b] text-sm font-semibold text-white px-7 py-2.5 rounded-full hover:bg-black hover:text-white border border-white transition-colors cursor-pointer"
                 onClick={() => setOpenAuthModal(true)}
               >
                 Login / Sign Up
@@ -58,7 +60,7 @@ const LandingPage = () => {
               </div>
               <h1 className="text-5xl text-black font-medium mb-6 leading-tight">
                 Ace Interviews with <br />
-                <span className="text-transparent bg-clip-text bg-[radial-gradient(circle,#ff9324_0%,#fcd760_100%)] bg-size-[200%_200%] animate-text-shine font-semibold">
+                <span className="text-transparent bg-clip-text bg-[radial-gradient(circle,_#ff9324_0%,_#fcd760_100%)] bg-[length:200%_200%] animate-text-shine font-semibold">
                   {" "}
                   AI-powered
                 </span>{" "}
@@ -66,14 +68,14 @@ const LandingPage = () => {
               </h1>
             </div>
             <div className="w-full md:w-1/2">
-              <p className="text-[17px] test-gray-900 mr-0 md:mr-20 mb-6">
-                Get role-specific questions, ewpand answers when you need them,
+              <p className="text-[17px] text-gray-900 mr-0 md:mr-20 mb-6">
+                Get role-specific questions, expand answers when you need them,
                 dive deeper into concepts, and organize everything your way.
                 From preparation to mastery - your ultimate interview toolkit is
                 here.
               </p>
               <button
-                className="bg-black text-sm font-semibold text-white px-7 py-2.5 rounded-full hover:bg-yellow-100 hover:text-black border border-yellow-50 hover:border-yellow-300 transition-colors cursor-pointer "
+                className="bg-black text-sm font-semibold text-white px-7 py-2.5 rounded-full hover:bg-yellow-100 hover:text-black border border-yellow-50 hover:border-yellow-300 transition-colors cursor-pointer"
                 onClick={handleCTA}
               >
                 Get Started
@@ -98,7 +100,6 @@ const LandingPage = () => {
           <div className="container mx-auto px-4 pt-10 pb-20">
             <section className="mt-5">
               <h2 className="text-2xl font-medium text-center mb-12">
-                {" "}
                 Features That Make You Shine
               </h2>
 
@@ -108,7 +109,7 @@ const LandingPage = () => {
                   {APP_FEATURES.slice(0, 3).map((feature) => (
                     <div
                       key={feature.id}
-                      className="bg-[#fffef8] p-6 rounded-xl shadow-xs hover:shadow-lg shadow-amber-100 transiotion border border-amber-100"
+                      className="bg-[#fffef8] p-6 rounded-xl shadow-xs hover:shadow-lg shadow-amber-100 transition border border-amber-100"
                     >
                       <h3 className="text-base font-semibold mb-3">
                         {feature.title}
