@@ -5,4 +5,3 @@ export type {
   CreateSessionFormData,
   CreateSessionResponse,
 } from "./session";
-// Export futurs types ici

@@ -1,40 +1,49 @@
 import { useEffect, useState } from "react";
 import { LuPlus } from "react-icons/lu";
-import { CARD_BG } from "../../utils/data.js";
+import { CARD_BG } from "../../utils/data";
 import { toast } from "react-hot-toast";
 import moment from "moment";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
 import { useNavigate } from "react-router-dom";
-import axiosInstance from "../../utils/axiosInstance.js";
-import { API_PATHS } from "../../utils/apiPaths.js";
-import SummaryCard from "../../components/cards/SummaryCard.jsx";
-import Modal from "../../components/Modal.jsx";
-import CreateSessionForm from "./CreateSessionForm.jsx";
-import DeleteAlertContent from "../../components/DeleteAlertContent.jsx";
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
+import SummaryCard from "../../components/cards/SummaryCard";
+import Modal from "../../components/Modal";
+import CreateSessionForm from "./CreateSessionForm";
+import DeleteAlertContent from "../../components/DeleteAlertContent";
+import { Session } from "../../types";
+
+interface DeleteAlertState {
+  open: boolean;
+  data: Session | null;
+}
 
 const Dashboard = () => {
   const navigate = useNavigate();
 
-  const [openCreateModal, setOpenCreateModal] = useState(false);
-  const [sessions, setSessions] = useState([]);
+  const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
+  const [sessions, setSessions] = useState<Session[]>([]);
 
-  const [openDeleteAlert, setOpenDeleteAlert] = useState({
+  const [openDeleteAlert, setOpenDeleteAlert] = useState<DeleteAlertState>({
     open: false,
     data: null,
   });
 
   const fetchAllSessions = async () => {
     try {
-      const response = await axiosInstance.get(API_PATHS.SESSION.GET_ALL);
+      const response = await axiosInstance.get<Session[]>(
+        API_PATHS.SESSION.GET_ALL
+      );
       setSessions(response.data);
     } catch (error) {
-      // Handle error silently
+      toast.error("Failed to fetch sessions. Please try again.");
     }
   };
 
-  const deleteSession = async (sessionData) => {
+  const deleteSession = async (sessionData: Session | null) => {
+    if (!sessionData) return;
     try {
-      await axiosInstance.delete(API_PATHS.SESSION.DELETE(sessionData?._id));
+      await axiosInstance.delete(API_PATHS.SESSION.DELETE(sessionData!._id));
       toast.success("Session deleted successfully!");
       setOpenDeleteAlert({ open: false, data: null });
       fetchAllSessions();
@@ -55,17 +64,17 @@ const Dashboard = () => {
             <SummaryCard
               key={data?._id}
               colors={CARD_BG[index % CARD_BG.length]}
-              role={data?.role || ""}
-              topicsToFocus={data?.topicsToFocus || ""}
-              experience={data?.experience || "-"}
-              questions={data?.questions?.length || "-"}
-              description={data?.description || ""}
+              role={data.role}
+              topicsToFocus={data.topicsToFocus}
+              experience={data.experience}
+              questions={data.questions.length}
+              description={data.description}
               lastUpdated={
-                data?.updatedAt
+                data.updatedAt
                   ? moment(data.updatedAt).format("Do MMM YYYY")
                   : ""
               }
-              onSelect={() => navigate(`/interview-prep/${data?._id}`)}
+              onSelect={() => navigate(`/interview-prep/${data._id}`)}
               onDelete={() => setOpenDeleteAlert({ open: true, data })}
             />
           ))}
@@ -81,7 +90,7 @@ const Dashboard = () => {
 
       <Modal
         isOpen={openCreateModal}
-        onClick={() => {
+        onClose={() => {
           setOpenCreateModal(false);
         }}
         hideHeader
@@ -93,7 +102,7 @@ const Dashboard = () => {
 
       <Modal
         isOpen={openDeleteAlert?.open}
-        onClick={() => setOpenDeleteAlert({ open: false, data: null })}
+        onClose={() => setOpenDeleteAlert({ open: false, data: null })}
         title="Delete Session"
       >
         <div className="">
