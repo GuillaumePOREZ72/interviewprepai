@@ -1,43 +1,145 @@
+/**
+ * Node modules
+ */
 import "dotenv/config";
 import express, { Express } from "express";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
-import connectDB from "./config/db.js";
+import cookieParser from "cookie-parser";
+import compression from "compression";
+import helmet from "helmet";
 
-import authRoutes from "./routes/authRoutes.js";
-import sessionRoutes from "./routes/sessionRoutes.js";
-import questionRoutes from "./routes/questionRoutes.js";
-import { protect } from "./middlewares/authMiddleware.js";
-import { generateConceptExplanation, generateInterviewQuestions } from "./controllers/aiController.js";
+/**
+ * Custom modules
+ */
+import connectDB from "./config/db";
+import authRoutes from "./routes/authRoutes";
+import sessionRoutes from "./routes/sessionRoutes";
+import questionRoutes from "./routes/questionRoutes";
+import { protect } from "./middlewares/authMiddleware";
+import {
+  generateConceptExplanation,
+  generateInterviewQuestions,
+} from "./controllers/aiController";
 
+/**
+ * Constants
+ */
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const PORT = process.env.PORT || 5000;
+const NODE_ENV = process.env.NODE_ENV || "development";
 
+/**
+ * Express app configuration
+ */
 const app: Express = express();
 
+// CORS configuration
+const corsOptions: cors.CorsOptions = {
+  origin(origin, callback) {
+    if (NODE_ENV === "development" || !origin) {
+      callback(null, true);
+    } else {
+      const whitelist = process.env.WHITELISTED_ORIGINS?.split(",") || [];
+      if (whitelist.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS error: ${origin} is not allowed by CORS`));
+        console.warn(`CORS error: ${origin} is not allowed by CORS`);
+      }
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+app.use(cors(corsOptions));
+
+// Middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+// Compression for responses larger than 1KB
 app.use(
-  cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+  compression({
+    threshold: 1024, // 1KB
   })
 );
 
-connectDB();
+// Security headers with relaxed CSP for development
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" },
+  contentSecurityPolicy: NODE_ENV === "production" ? undefined : false,
+}));
 
-app.use(express.json());
+// Health check endpoint
+app.get("/", (req, res) => {
+  res.json({
+    message: "Interview Prep AI Backend is running.",
+    version: "v1",
+    status: "healthy",
+  });
+});
 
-// Routes
+// Serve uploads folder
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/sessions", sessionRoutes);
 app.use("/api/questions", questionRoutes);
-
 app.use("/api/ai/generate-questions", protect, generateInterviewQuestions);
 app.use("/api/ai/generate-explanation", protect, generateConceptExplanation);
 
-// Serve uploads folder
-app.use("/uploads", express.static(path.join(__dirname, "uploads"), {}));
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {});
+/**
+ * Database connection and server startup
+ */
+const startServer = async () => {
+  try {
+    // Conect to database
+    await connectDB();
+    console.log("✅ Database connected successfully");
+
+    // Start server
+    app.listen(PORT, () => {
+      console.log(
+        `🚀 Server running in ${NODE_ENV} mode on http://localhost:${PORT}`
+      );
+    });
+  } catch (error) {
+    console.error("❌ Error starting server:", error);
+
+    if (NODE_ENV === "production") {
+      process.exit(1);
+    }
+  }
+};
+
+/**
+ * Graceful shutdown handler
+ */
+const handleServerShutdown = async () => {
+  try {
+    console.log("\n⚠️  Shutting down server gracefully...");
+    // Disconnect from database
+    const mongoose = await import("mongoose");
+    await mongoose.default.disconnect();
+    console.log("✅ Database disconnected");
+    console.log("👋 Server shutdown complete");
+    process.exit(0);
+  } catch (error) {
+    console.error("❌ Error during server shutdown:", error);
+    process.exit(1);
+  }
+};
+
+// Register shutdown handlers
+process.on("SIGTERM", handleServerShutdown);
+process.on("SIGINT", handleServerShutdown);
+
+// Start the server
+startServer();
