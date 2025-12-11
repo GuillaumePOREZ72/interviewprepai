@@ -57,24 +57,23 @@ const LandingPage = () => {
             <div className="w-full md:w-1/2 pr-4 mb-8 md:mb-0">
               <div className="flex items-center justify-left mb-4">
                 <div className="flex items-center gap-2 text-[13px] text-indigo-700 font-semibold bg-indigo-100 px-3 py-1.5 rounded-full border border-indigo-200">
-                  <LuSparkles /> AI Powered
+                  <LuSparkles /> Powered by AI
                 </div>
               </div>
               <h1 className="text-5xl text-slate-900 font-semibold mb-6 leading-tight">
-                Ace Interviews with <br />
+                Master Your Next Interview with <br />
                 <span className="gradient-text-primary bg-[length:200%_200%]animate-text-shine font-bold">
                   {" "}
                   AI-powered
                 </span>{" "}
-                Learning
+                Preparation
               </h1>
             </div>
             <div className="w-full md:w-1/2">
-              <p className="text-[17px] text-slate-700 mr-0 md:mr-20 mb-6 leading-relaxed">
-                Get role-specific questions, expand answers when you need them,
-                dive deeper into concepts, and organize everything your way.
-                From preparation to mastery - your ultimate interview toolkit is
-                here.
+              <p className="text-[17px] text-slate-700 text-justify mr-0 md:mr-20 mb-6 leading-relaxed">
+                Generate custom interview questions, get instant explanations,
+                and organize your prep sessions like a pro. Your AI interview
+                coach is ready.
               </p>
               <button
                 className="bg-gradient-to-r from-slate-900 to-slate-800 text-sm font-semibold text-white px-8 py-3 rounded-full hover:shadow-xl hover:shadow-slate-900/30 hover:scale-[1.02] border border-slate-700 transition-all duration-200 cursor-pointer"
@@ -102,8 +101,8 @@ const LandingPage = () => {
           <div className="container mx-auto px-4 pt-10 pb-20">
             <section className="mt-5">
               <h2 className="text-3xl font-semibold text-center mb-12 text-slate-900">
-                Features That Make You{" "}
-                <span className="gradient-text-purple">Shine</span>
+                Your Complete{" "}
+                <span className="gradient-text-purple">Interview</span> Toolkit
               </h2>
 
               <div className="flex flex-col items-center gap-8">
@@ -120,7 +119,7 @@ const LandingPage = () => {
                       <h3 className="text-base font-semibold mb-3 text-slate-900">
                         {feature.title}
                       </h3>
-                      <p className="text-slate-600 leading-relaxed">
+                      <p className="text-slate-600 text-justify leading-relaxed">
                         {feature.description}
                       </p>
                     </div>
@@ -140,7 +139,9 @@ const LandingPage = () => {
                       <h3 className="text-base font-semibold mb-3 text-slate-900">
                         {feature.title}
                       </h3>
-                      <p className="text-slate-600 leading-relaxed">{feature.description}</p>
+                      <p className="text-slate-600 leading-relaxed">
+                        {feature.description}
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -150,7 +151,7 @@ const LandingPage = () => {
         </div>
 
         <div className="text-sm bg-slate-100 text-slate-600 text-center p-5 mt-5 border-t border-slate-200">
-          Made with ❤️ by Guillaume... Happy Coding
+          Built by a developer, for developers. Good luck! 🚀
         </div>
       </div>
       <Modal
