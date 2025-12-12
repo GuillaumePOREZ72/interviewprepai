@@ -23,13 +23,6 @@ const DeleteAlertContent = ({ content, onDelete }: DeleteAlertContentProps) => {
       <div className="flex justify-end gap-3">
         <button
           type="button"
-          className="px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors"
-          onClick={() => {}}
-        >
-          Cancel
-        </button>
-        <button
-          type="button"
           className="px-4 py-2 text-sm font-semibold text-white bg-linear-to-r from-red-600 to-red-700 rounded-lg hover:shadow-lg hover:shadow-red-500/30 hovr:scale-[1.02] transition-all duration-200"
           onClick={onDelete}
         >
