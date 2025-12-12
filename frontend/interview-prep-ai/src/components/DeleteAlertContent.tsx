@@ -1,3 +1,5 @@
+import {LuAlertTriangle} from "react-icons/lu";
+
 interface DeleteAlertContentProps {
   content: string;
   onDelete: () => void;
@@ -5,7 +7,7 @@ interface DeleteAlertContentProps {
 
 const DeleteAlertContent = ({ content, onDelete }: DeleteAlertContentProps) => {
   return (
-    <div className="p-5">
+    <div className="p-6">
       <p className="text-[14px]">{content}</p>
 
       <div className="flex justify-end mt-6">

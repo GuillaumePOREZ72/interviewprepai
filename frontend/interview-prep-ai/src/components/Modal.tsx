@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { LuX, Lux } from "react-icons/lu";
 
 interface ModalProps {
   children: ReactNode;
@@ -8,42 +9,35 @@ interface ModalProps {
   hideHeader?: boolean;
 }
 
-const Modal = ({ children, isOpen, onClose, title, hideHeader= false }: ModalProps) => {
+const Modal = ({
+  children,
+  isOpen,
+  onClose,
+  title,
+  hideHeader = false,
+}: ModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-black/40">
+    <div className="fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
       {/* Modal Content */}
       <div
-        className={`relative flex flex-col bg-white shadow-lg rounded-lg overflow-hidden`}
+        className="relative flex flex-col bg-white shadow-2xl rounded-2xl overflow-hidden max-h-[90vh] animate-in zoom-in-95 duration-200"
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
         {!hideHeader && (
-          <div className="flex items-center justify-between p-4 border-b border-gray-200">
-            <h3 className="md:text-lg font-medium text-gray-900">{title}</h3>
+          <div className="flex items-center justify-between p-5 border-b border-slate-200 bg-linear-to-r from-slate-50 to-white">
+            <h3 className="text-xl font-bold text-slate-900">{title}</h3>
           </div>
         )}
 
         <button
           type="button"
-          className="text-gray-400 bg-transparent hover:bg-orange-100 hover:text-gray-900 rounded-lg text-sm w-8 h-8 flex justify-center items-center absolute top-3.5 right-3.5 cursor-pointer"
+          className="absolute top-4 right-4 text-slate-400 bg-white hover:bg-slate-100 hover:text-slate-900 rounded-lg text-sm w-9 h-9 flex items-center justify-center transition-all duration-200 shadow-sm hover:shadow-md z-10"
           onClick={onClose}
         >
-          <svg
-            className="w-3 h-3"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 14 14"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7l-6 6"
-            />
-          </svg>
+          <LuX className="w-5 h-5" />
         </button>
 
         {/*Modal Body (scrollable) */}

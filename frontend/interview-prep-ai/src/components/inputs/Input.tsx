@@ -8,6 +8,7 @@ interface InputProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   type?: InputType;
+  label?: string;
 }
 
 const Input = ({
@@ -15,6 +16,7 @@ const Input = ({
   onChange,
   placeholder = "",
   type = "text",
+  label,
 }: InputProps) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -23,8 +25,13 @@ const Input = ({
   };
 
   return (
-    <div>
-      <div className="input-box">
+    <div className="w-full">
+      {label && (
+        <label className="block text-sm font-medium text-slate-700 mb-2">
+          {label}
+        </label>
+      )}
+      <div className="relative flex items-center w-full bg-white border border-slate-200 rounded-lg px-4 py-3 transition-all duration-200 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 hover:border-slate-300">
         <input
           type={
             type === "password" ? (showPassword ? "text" : "password") : type
@@ -32,24 +39,20 @@ const Input = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className="w-full bg-transparent outline-none"
+          className="w-full bg-transparent outline-none text-sm text-slate-900 placeholder:text-slate-400"
         />
         {type === "password" && (
-          <>
+          <button
+            type="button"
+            onClick={togglePassword}
+            className="ml-2 text-slate-400 hover:text-primary transition-colors cursor-pointer"
+          >
             {showPassword ? (
-              <FaRegEye
-                size={22}
-                className="text-primary cursor-pointer"
-                onClick={togglePassword}
-              />
+              <FaRegEye size={20} />
             ) : (
-              <FaRegEyeSlash
-                size={22}
-                className="text-slate-400 cursor-pointer"
-                onClick={togglePassword}
-              />
+              <FaRegEyeSlash size={20} />
             )}
-          </>
+          </button>
         )}
       </div>
     </div>
