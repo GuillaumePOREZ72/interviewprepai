@@ -1,9 +1,7 @@
-import { LuTrash2 } from "react-icons/lu";
+import { LuTrash2, LuCalendar, LuMessageSquare } from "react-icons/lu";
 import { getInitials } from "../../utils/helper";
-import {CardBg} from "../../utils/data"
 
 interface SummaryCardProps {
-  colors: CardBg;
   role: string;
   topicsToFocus: string;
   experience: number;
@@ -14,9 +12,7 @@ interface SummaryCardProps {
   onDelete: () => void;
 }
 
-
 const SummaryCard = ({
-  colors,
   role,
   topicsToFocus,
   experience,
@@ -28,58 +24,65 @@ const SummaryCard = ({
 }: SummaryCardProps) => {
   return (
     <div
-      className="bg-white border border-gray-300/40 rounded-xl p-2 overflow-hidden cursor-pointer hover:shadow-xl shadow-gray-100 relative group"
+      className="bg-white/80 backdrop-blur-sm border border-slate-200/50 rounded-xl overflow-hidden cursor-pointer hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 transition-all duration-300 group relative"
       onClick={onSelect}
     >
-      <div
-        className="rounded-lg p-4 cursor-pointer relative"
-        style={{ background: colors.bgcolor }}
-      >
-        <div className="flex items-start">
-          <div className="shrink-0 w-12 h-12 bg-white rounded-md flex items-center justify-center mr-4">
-            <span className="text-lg font-semibold text-black">
+      {/* Header with gradient */}
+      <div className="bg-gradient-to-br from-indigo-50 via-purple-50 to-cyan-50 p-5 relative">
+        <div className="flex items-start gap-4">
+          <div className="shrink-0 w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center shadow-lg shadow-primary/20">
+            <span className="text-lg font-bold text-white">
               {getInitials(role)}
             </span>
           </div>
-          {/* Content Container */}
-          <div className="grow">
-            <div className="flex justify-between items-start">
-              {/* Title and Skills */}
-              <div>
-                <h2 className="text-[17px] font-medium">{role}</h2>
-                <p className="text-xs font-medium text-gray-900">
-                  {topicsToFocus}
-                </p>
-              </div>
-            </div>
+
+          <div className="flex-1 min-w-0">
+            <h2 className="text-lg font-semibold text-slate-900 mb-1 truncate">
+              {role}
+            </h2>
+            <p className="text-xs font-medium text-indigo-600 truncate">
+              {topicsToFocus}
+            </p>
           </div>
         </div>
+
+        {/* Delete button */}
         <button
-          className="hidden group-hover:flex items-center gap-2 text-xs text-rose-500 font-medium bg-rose-50 px-3 py-1 rounded text-nowrap border border-rose-100 hover:border-rose-200 cursor-pointer absolute top-7 right-10"
+          className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center gap-1.5 text-xs text-red-600 font-medium bg-red-50 px-3 py-1.5 rounded-lg border border-red-200 hover:bg-red-100 hover:border-red-300"
           onClick={(e) => {
             e.stopPropagation();
             onDelete();
           }}
         >
-          <LuTrash2 className="h-5" />
+          <LuTrash2 className="w-3.5 h-3.5" />
+          Delete
         </button>
       </div>
-      <div className="px-3 pb-3">
-        <div className="flex items-center gap-3 mt-4">
-          <div className="text-[10px] font-medium text-black px-3 py-1 border-[0.5px] border-gray-900 rounded-full">
-            Experience: {experience} {experience === 1 ? "Year" : "Years"}
+
+      {/* Content */}
+      <div className="p-5">
+        {/* Description */}
+        <p className="text-sm text-slate-600 line-clamp-2 mb-4 leading-relaxed">
+          {description || "No description provided"}
+        </p>
+
+        {/* Stats */}
+        <div className="flex flex-wrap gap-2 mb-4">
+          <div className="flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-slate-100 px-3 py-1.5 rounded-lg">
+            <LuMessageSquare className="w-3.5 h-3.5 text-primary" />
+            {questions} {questions === 1 ? "Question" : "Questions"}
           </div>
-          <div className="text-[10px] font-medium text-black px-3 py-1 border-[0.5px] border-gray-900 rounded-full">
-            {questions} Q&A
-          </div>
-          <div className="text-[10px] font-medium text-black px-3 py-1 border-[0.5px] border-gray-900 rounded-full">
-            Last Updated: {lastUpdated}
+          <div className="flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-slate-100 px-3 py-1.5 rounded-lg">
+            <span className="text-secondary">📚</span>
+            {experience} {experience === 1 ? "Year" : "Years"}
           </div>
         </div>
-        {/* Description */}
-        <p className="text-[12px] text-gray-500 font-medium line-clamp-2 mt-3">
-          {description}
-        </p>
+
+        {/* Last updated */}
+        <div className="flex items-center gap-1.5 text-xs text-slate-500 pt-3 border-t border-slate-100">
+          <LuCalendar className="w-3.5 h-3.5" />
+          Updated {lastUpdated}
+        </div>
       </div>
     </div>
   );
