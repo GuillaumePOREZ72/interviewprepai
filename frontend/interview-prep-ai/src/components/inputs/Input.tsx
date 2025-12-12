@@ -6,7 +6,6 @@ type InputType = "text" | "password" | "email" | "number" | "tel" | "url";
 interface InputProps {
   value: string | number;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  label: string;
   placeholder?: string;
   type?: InputType;
 }
@@ -14,7 +13,6 @@ interface InputProps {
 const Input = ({
   value,
   onChange,
-  label,
   placeholder = "",
   type = "text",
 }: InputProps) => {
@@ -26,7 +24,6 @@ const Input = ({
 
   return (
     <div>
-      <label className="text-[13px] text-slate-800">{label}</label>
       <div className="input-box">
         <input
           type={
