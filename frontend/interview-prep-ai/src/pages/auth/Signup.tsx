@@ -9,6 +9,7 @@ import { API_PATHS } from "../../utils/apiPaths";
 import uploadImage from "../../utils/uploadImage";
 import { AuthResponse } from "../../types";
 import { AxiosError } from "axios";
+import { LuSparkles } from "react-icons/lu";
 
 interface SignupProps {
   setCurrentPage: (page: "login" | "signup") => void;
@@ -21,6 +22,7 @@ const Signup = ({ setCurrentPage }: SignupProps) => {
   const [password, setPassword] = useState<string>("");
 
   const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { updateUser } = useUser();
   const navigate = useNavigate();
@@ -54,12 +56,15 @@ const Signup = ({ setCurrentPage }: SignupProps) => {
         profileImageUrl = imgUploadRes.imageUrl || "";
       }
 
-      const response = await axiosInstance.post<AuthResponse>(API_PATHS.AUTH.REGISTER, {
-        name: fullName,
-        email,
-        password,
-        profileImageUrl,
-      });
+      const response = await axiosInstance.post<AuthResponse>(
+        API_PATHS.AUTH.REGISTER,
+        {
+          name: fullName,
+          email,
+          password,
+          profileImageUrl,
+        }
+      );
 
       const { token, user } = response.data;
 
@@ -79,13 +84,19 @@ const Signup = ({ setCurrentPage }: SignupProps) => {
   };
 
   return (
-    <div className="w-[90vw] md:w-[33vw] p-7 flex flex-col justify-center">
-      <h3 className="text-lg font-semibold text-black">Create an Account</h3>
-      <p className="text-xs text-slate-700 mt-[5px] mb-6">
-        Join us today by entering your details below.
+    <div className="w-[90vw] md:w-[33vw] p-8 flex flex-col justify-center">
+      {/* Header with icon */}
+      <div className="flex items-center gap-2 mb-2">
+        <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+          <LuSparkles className="text-white text-xl" />
+        </div>
+        <h3 className="text-2xl font-bold text-slate-900">Create Account</h3>
+      </div>
+      <p className="text-sm text-slate-600 mb-8">
+        Start your interview preparation journey today
       </p>
 
-      <form onSubmit={handleSignup}>
+      <form onSubmit={handleSignup} className="space-y-1">
         <ProfilePhotoSelector image={profilePic} setImage={setProfilePic} />
 
         <div className="grid grid-cols-1 md:grid-cols-1 gap-2">
@@ -108,27 +119,31 @@ const Signup = ({ setCurrentPage }: SignupProps) => {
           <Input
             value={password}
             onChange={({ target }) => setPassword(target.value)}
-            label="password"
-            placeholder="Enter your password (min 8 characters)"
+            label="Password"
+            placeholder="Minimum 8 characters"
             type="password"
           />
         </div>
 
-        {error && <p className="text-red-500 text-xs pb-2.5">{error}</p>}
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+            {error}
+          </div>
+        )}
 
-        <button type="submit" className="btn-primary">
+        <button type="submit" className="btn-primary mt-6" disabled={isLoading}>
           {" "}
-          SIGN UP
+          {isLoading ? "Creating Account..." : "Create Account"}
         </button>
 
-        <p className="text-[13px] text-slate-800 mt-3">
+        <p className="text-sm text-slate-600 text-center mt-6">
           Already have an account?{" "}
           <button
             type="button"
-            className="font-medium text-primary underline cursor-pointer"
+            className="font-semibold gradient-text-purple hover:underline cursor-pointer"
             onClick={() => setCurrentPage("login")}
           >
-            Login
+            Sign In
           </button>
         </p>
       </form>

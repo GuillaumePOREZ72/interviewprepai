@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LuPlus } from "react-icons/lu";
+import { LuPlus, LuSparkles } from "react-icons/lu";
 import { CARD_BG } from "../../utils/data";
 import { toast } from "react-hot-toast";
 import moment from "moment";
@@ -58,7 +58,7 @@ const Dashboard = () => {
 
   return (
     <DashboardLayout>
-      <div className="container mx-auto pt-4 pb-4">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/20 to-purple-50/20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-7 pt-1 pb-6 px-4 md:px-0">
           {sessions?.map((data, index) => (
             <SummaryCard
@@ -79,13 +79,17 @@ const Dashboard = () => {
             />
           ))}
         </div>
-        <button
-          className="h-12 md:h-12 flex items-center justify-center gap-3 bg-linear-to-r from-primary to-[#e99a4b] text-sm font-semibold text-white px-7 py-2.5 rounded-full hover:bg-black hover:text-white transition-colors cursor-pointer hover:shadow-2xl hover:shadow-orange-300 fixed bottom-10 md:bottom-20 right-10 md:right-20"
-          onClick={() => setOpenCreateModal(true)}
-        >
-          <LuPlus className="text-2xl text-white" />
-          Add New
-        </button>
+
+        {/* Floating Add button */}
+        {sessions.length > 0 && (
+          <button
+            className="flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-secondary text-sm font-semibold text-white px-6 py-3.5 rounded-full hover:shadow-2xl hover:shadow-primary/40 hover:scale-[1.05] transition-all duration-200 cursor-pointer fixed bottom-8 right-8 z-20 "
+            onClick={() => setOpenCreateModal(true)}
+          >
+            <LuPlus className="text-xl" />
+            New Session
+          </button>
+        )}
       </div>
 
       <Modal

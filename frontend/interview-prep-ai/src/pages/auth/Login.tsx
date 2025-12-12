@@ -7,6 +7,7 @@ import { API_PATHS } from "../../utils/apiPaths";
 import { useUser } from "../../hooks/useUser";
 import { AxiosError } from "axios";
 import { AuthResponse } from "../../types";
+import { LuSparkles } from "react-icons/lu";
 
 interface LoginProps {
   setCurrentPage: (page: "login" | "signup") => void;
@@ -63,13 +64,19 @@ const Login = ({ setCurrentPage }: LoginProps) => {
   };
 
   return (
-    <div className="w-[90vw] md:w-[33vw] p-7 flex flex-col justify-center">
-      <h3 className="text-lg font-semibold text-black">Welcome Back</h3>
-      <p className="text-xs text-slate-700 mt-[5px] mb-6">
-        Please enter your details to log in
+    <div className="w-[90vw] md:w-[33vw] p-8 flex flex-col justify-center">
+      {/* Header with icon */}
+      <div className="flex items-center gap-2 mb-2">
+        <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+          <LuSparkles className="text-white text-xl" />
+        </div>
+        <h3 className="text-2xl font-bold text-slate-900">Welcome Back</h3>
+      </div>
+      <p className="text-sm text-slate-600 mt-2 mb-8">
+        Please enter your credentials to continue
       </p>
 
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleLogin} className="space-y-1">
         <Input
           value={email}
           onChange={({ target }) => setEmail(target.value)}
@@ -86,19 +93,19 @@ const Login = ({ setCurrentPage }: LoginProps) => {
           type="password"
         />
 
-        {error && <p className="text-red-500 text-xs pb-2.5">{error}</p>}
+        {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">{error}</div>}
 
-        <button type="submit" className="btn-primary">
-          LOGIN
+        <button type="submit" className="btn-primary mt-6">
+          Sign In
         </button>
-        <p className="text-[13px] text-slate-800 mt-3">
+        <p className="text-sm text-slate-600 mt-6">
           Don't have an account?{" "}
           <button
             type="button"
-            className="font-medium text-primary underline cursor-pointer"
+            className="font-semibold gradient-text-purple hover:underline cursor-pointer"
             onClick={() => setCurrentPage("signup")}
           >
-            Signup
+            Signup for free
           </button>
         </p>
       </form>
