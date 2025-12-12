@@ -106,12 +106,12 @@ const QuestionCard = ({
 
       {/* Answer Content */}
       <div
-        className="overflow-hidden transition-all duration-300 ease-in-out"
+        className="overflow-visible transition-all duration-300 ease-in-out"
         style={{ maxHeight: `${height}px` }}
       >
         <div
           ref={contentRef}
-          className="bg-linear-to-br from-slate-50 to-indigo-50/30 px-5 py-4 mt-4 rounded-xl border border-slate-800"
+          className="bg-linear-to-br from-slate-50 to-indigo-50/30 px-5 py-4 mt-4 rounded-xl border border-slate-100"
         >
           <AIResponsePreview content={answer} />
         </div>

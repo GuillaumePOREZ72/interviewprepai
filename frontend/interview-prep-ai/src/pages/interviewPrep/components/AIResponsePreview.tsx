@@ -146,39 +146,45 @@ function CodeBlock({ code, language }: CodeBlockProps) {
   };
 
   return (
-    <div className="relative my-6 rounded-lg overflow-hidden bg-gray-50 border border-gray-200">
-      <div className="flex items-center justify-between px-4 py-2 bg-gray-100 border-b border-gray-200">
+    <div className="relative my-6 rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm">
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-2.5 bg-linear-to-r from-slate-50 to-slate-100 border-b border-slate-200">
         <div className="flex items-center space-x-2">
-          <LuCode size={16} className="text-gray-500" />
+          <div className="w-7 h-7 bg-linear-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+            <LuCode size={14} className="text-white" />
+          </div>
           <span className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
             {language || "code"}
           </span>
         </div>
         <button
           onClick={copyCode}
-          className="text-gray-500 hover:text-gray-700 focus:outline-none relative group"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-600 bg-white rounded-lg border border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition-all duration-200 group"
           aria-label="Copy code"
         >
           {isCopied ? (
-            <LuCheck size={16} className="text-green-600" />
+            <>
+              {" "}
+              <LuCheck size={14} className="text-green-600" />
+              <span className="text-green-600">Copied!</span>
+            </>
           ) : (
-            <LuCopy size={16} />
-          )}
-          {isCopied && (
-            <span className="absolute -top-8 right-0 bg-black text-white text-xs rounded-md px-2 py-1 opacity-80 group-hover:opacity-100 transition">
-              Copied!
-            </span>
+            <>
+              <LuCopy size={14} />
+            </>
           )}
         </button>
       </div>
+
+      {/* Code */}
       <SyntaxHighlighter
         language={language}
         style={oneLight}
         customStyle={{
-          fontSize: 12.5,
+          fontSize: 13,
           margin: 0,
-          padding: "1rem",
-          background: "transparent",
+          padding: "1.25rem",
+          background: "#fafafa",
         }}
       >
         {code}
