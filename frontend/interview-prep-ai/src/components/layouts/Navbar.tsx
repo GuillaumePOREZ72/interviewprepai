@@ -29,7 +29,7 @@ const Navbar = () => {
             aria-label="Toggle theme"
           >
             {theme === "dark" ? (
-              <LuSun className="text-xl" />
+              <LuSun className="text-xl text-text-tertiary" />
             ) : (
               <LuMoon className="text-xl" />
             )}

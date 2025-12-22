@@ -189,18 +189,18 @@ const CodeBlock = ({ code, language }: CodeBlockProps) => {
   };
 
   return (
-    <div className="relative my-4 rounded-lg overflow-hidden bg-white border border-border-primary">
+    <div className="relative my-4 rounded-lg overflow-hidden bg-bg-primary border border-border-primary shadow-sm">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-2 bg-bg-secondary border-b border-border-primary ">
         <div className="flex items-center gap-2 text-text-secondary">
           <LuCode className="w-4 h-4" />
-          <span className="text-xs font-medium uppercase">
+          <span className="text-xs font-medium uppercase tracking-wider">
             {language || "code"}
           </span>
         </div>
         <button
           onClick={handleCopy}
-          className="flex items-center gap-1.5 text-xs text-text-tertiary hover:text-primary transition-colors"
+          className="flex items-center gap-1.5 text-xs text-text-tertiary hover:text-primary transition-colors cursor-pointer"
           aria-label="Copy code"
         >
           {isCopied ? (
@@ -218,17 +218,26 @@ const CodeBlock = ({ code, language }: CodeBlockProps) => {
       </div>
 
       {/* Code */}
-      <div className="text-sm">
+      <div className="text-sm dark:bg-[#1e1e1e]">
         <SyntaxHighlighter
           language={language || "text"}
           style={theme === "dark" ? vscDarkPlus : oneLight}
           customStyle={{
-            fontSize: "0.875rem",
+            fontSize: "0.8rem",
             margin: 0,
             padding: "1.5rem",
             background: "transparent",
+            fontFamily: "var(--font-mono)",
           }}
           wrapLongLines={true}
+          PreTag="div"
+          CodeTag="code"
+          codeTagProps={{
+            style: {
+              background: "transparent",
+              textShadow: "none",
+            },
+          }}
         >
           {code}
         </SyntaxHighlighter>

@@ -57,17 +57,17 @@ const Dashboard = () => {
 
   return (
     <DashboardLayout>
-      <div className="min-h-screen bg-linear-to-br from-slate-50 via-indigo-50/20 to-purple-50/20">
+      <div className="min-h-screen bg-bg-primary transition-colors duration-300">
         <div className="container mx-auto pt-8 pb-24 px-4">
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-3">
-              <h1 className="text-3xl font-bold text-slate-900">
+              <h1 className="text-3xl font-bold text-text-primary">
                 Your Interview{" "}
                 <span className="gradient-text-purple">Sessions</span>
               </h1>
             </div>
-            <p className="text-slate-600 ml-1">
+            <p className="text-text-secondary ml-1">
               {sessions.length === 0
                 ? "Start by creating your first interview prep session"
                 : `You have ${sessions.length} active ${
@@ -79,13 +79,13 @@ const Dashboard = () => {
           {/* Sessions Grid */}
           {sessions.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20">
-              <div className="w-20 h-20 bg-linear-to-br from-indigo-100 to-purple-100 rounded-2xl flex items-center justify-center mb-6">
+              <div className="w-20 h-20 bg-bg-tertiary rounded-2xl flex items-center justify-center mb-6 shadow-inner border border-border-primary">
                 <LuSparkles className="text-4xl text-primary" />
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">
+              <h3 className="text-xl font-semibold text-text-primary mb-2">
                 No sessions yet
               </h3>
-              <p className="text-slate-600 text-center max-w-md mb-6">
+              <p className="text-text-secondary text-center max-w-md mb-6">
                 Create your first interview preparation session and start
                 practicing with AI-generated questions
               </p>
