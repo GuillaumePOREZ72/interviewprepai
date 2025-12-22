@@ -35,14 +35,14 @@ const QuestionCard = ({
   };
 
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-xl mb-4 overflow-hidden py-4 px-5 shadow-lg hover:shadow-xl border border-slate-200/50 transition-all duration-300 group">
+    <div className="bg-white/80 backdrop-blur-sm rounded-xl mb-4 overflow-hidden py-4 px-5 shadow-lg hover:shadow-xl border border-border-primary  transition-all duration-300 group">
       <div className="flex items-start justify-between cursor-pointer">
         <div className="flex items-center gap-3 flex-1" onClick={toggleExpand}>
-          <div className="shrink-0 w-8 h-8 bg-linear-to-br from-indigo-100 to-purple-100 rounded-lg flex items-center justify-center mt-0.5">
+          <div className="shrink-0 w-8 h-8 bg-linear-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/50 dark:to-purple-900/50 rounded-lg flex items-center justify-center mt-0.5">
             <span className="text-sm font-bold text-primary">Q</span>
           </div>
           <h3
-            className="text-sm md:text-base font-medium text-slate-800 leading-relaxed flex-1"
+            className="text-sm md:text-base font-medium text-text-primary leading-relaxed flex-1"
             onClick={toggleExpand}
           >
             {question}
@@ -61,7 +61,7 @@ const QuestionCard = ({
               className={`flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-200 cursor-pointer ${
                 isPinned
                   ? "bg-primary text-white shadow-md shadow-primary/30"
-                  : "bg-slate-100"
+                  : "bg-bg-secondary hover:bg-bg-tertiary"
               }`}
               onClick={(e) => {
                 e.stopPropagation();
@@ -91,7 +91,7 @@ const QuestionCard = ({
 
           {/* Expand/Collapse Button */}
           <button
-            className="text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+            className="text-text-tertiary hover:text-text-secondary transition-colors cursor-pointer"
             onClick={toggleExpand}
           >
             <LuChevronDown
@@ -106,14 +106,14 @@ const QuestionCard = ({
 
       {/* Answer Content */}
       <div
-        className="overflow-visible transition-all duration-300 ease-in-out"
-        style={{ maxHeight: `${height}px` }}
+        ref={contentRef}
+        style={{ height: `${height}px` }}
+        className="transition-all duration-300 ease-in-out overflow-hidden"
       >
-        <div
-          ref={contentRef}
-          className="bg-linear-to-br from-slate-50 to-indigo-50/30 px-5 py-4 mt-4 rounded-xl border border-slate-100"
-        >
-          <AIResponsePreview content={answer} />
+        <div className="pt-4 pl-11 pr-4">
+          <div className="bg-bg-secondary rounded-xl p-4 border border-border-primary">
+            <AIResponsePreview content={answer} />
+          </div>
         </div>
       </div>
     </div>

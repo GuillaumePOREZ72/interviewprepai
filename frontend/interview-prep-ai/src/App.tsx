@@ -12,6 +12,7 @@ import Dashboard from "./pages/home/Dashboard";
 import UserProvider from "./context/useContext";
 import { useUser } from "./hooks/useUser";
 import { ReactNode } from "react";
+import { ThemeProvider } from "./context/ThemeContext";
 
 interface ProtectedRoutesProps {
   children: ReactNode;
@@ -33,35 +34,37 @@ const ProtectedRoutes = ({ children }: ProtectedRoutesProps) => {
 
 const App = () => {
   return (
-    <UserProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
+    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+      <UserProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
 
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoutes>
-                <Dashboard />
-              </ProtectedRoutes>
-            }
-          />
-          <Route
-            path="/interview-prep/:sessionId"
-            element={
-              <ProtectedRoutes>
-                <InterviewPrep />
-              </ProtectedRoutes>
-            }
-          />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoutes>
+                  <Dashboard />
+                </ProtectedRoutes>
+              }
+            />
+            <Route
+              path="/interview-prep/:sessionId"
+              element={
+                <ProtectedRoutes>
+                  <InterviewPrep />
+                </ProtectedRoutes>
+              }
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
 
-        <Toaster
-          toastOptions={{ className: "", style: { fontSize: "13px" } }}
-        />
-      </Router>
-    </UserProvider>
+          <Toaster
+            toastOptions={{ className: "", style: { fontSize: "13px" } }}
+          />
+        </Router>
+      </UserProvider>
+    </ThemeProvider>
   );
 };
 

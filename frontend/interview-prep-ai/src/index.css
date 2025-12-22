@@ -7,26 +7,52 @@
   --font-mono: "JetBrains Mono", monospace;
   --breakpoint-3xl: 1920px;
 
-  /* Tech Blue & Purple Palette */
-  --color-primary: #6366f1; /* Indigo vif */
-  --color-secondary: #8b5cf6; /* Purple */
-  --color-accent: #06b6d4; /* Cyan tech */
-  --color-success: #10b981; /* Green */
-  --color-warning: #f59e0b; /* Amber */
-  --color-danger: #ef4444; /* Red */
+  /* Static Brand Colors */
+  --color-primary: #6366f1; 
+  --color-secondary: #8b5cf6; 
+  --color-accent: #06b6d4; 
+  --color-success: #10b981; 
+  --color-warning: #f59e0b; 
+  --color-danger: #ef4444; 
 
-  /* Backgrounds */
-  --color-bg-primary: #f8fafc; /* Slate 50 */
-  --color-bg-secondary: #f1f5f9; /* Slate 100 */
-  --color-bg-tertiary: #e2e8f0; /* Slate 200 */
+  /* Dynamic Semantic Colors */
+  --color-bg-primary: var(--bg-primary-val);
+  --color-bg-secondary: var(--bg-secondary-val);
+  --color-bg-tertiary: var(--bg-tertiary-val);
 
-  /* Text colors */
-  --color-text-primary: #0f172a; /* Slate 900 */
-  --color-text-secondary: #475569; /* Slate 600 */
-  --color-text-tertiary: #94a3b8; /* Slate 400 */
+  --color-text-primary: var(--text-primary-val);
+  --color-text-secondary: var(--text-secondary-val);
+  --color-text-tertiary: var(--text-tertiary-val);
+  
+  --color-border-primary: var(--border-primary-val);
 }
 
 @layer base {
+  :root {
+    /* Light Mode Base */
+    --bg-primary-val: #f8fafc;   /* Slate 50 */
+    --bg-secondary-val: #f1f5f9; /* Slate 100 */
+    --bg-tertiary-val: #e2e8f0;  /* Slate 200 */
+    
+    --text-primary-val: #0f172a; /* Slate 900 */
+    --text-secondary-val: #475569; /* Slate 600 */
+    --text-tertiary-val: #94a3b8; /* Slate 400 */
+
+    --border-primary-val: #e2e8f0; /* Slate 200 */
+  }
+
+  .dark {
+    /* Dark Mode Base - Deep Slate */
+    --bg-primary-val: #020617;   /* Slate 950 */
+    --bg-secondary-val: #0f172a; /* Slate 900 */
+    --bg-tertiary-val: #1e293b;  /* Slate 800 */
+
+    --text-primary-val: #f8fafc; /* Slate 50 */
+    --text-secondary-val: #cbd5e1; /* Slate 300 */
+    --text-tertiary-val: #64748b; /* Slate 500 */
+
+    --border-primary-val: #1e293b; /* Slate 800 */
+  }
   html {
     font-family: var(--font-display);
     -webkit-font-smoothing: antialiased;
@@ -37,18 +63,19 @@
     background-color: var(--color-bg-primary);
     color: var(--color-text-primary);
     overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+  }
   }
 
   code,
   pre {
     font-family: var(--font-mono);
   }
-}
+
 
 /* Custom scrollbar styling */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
-  height: 6px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
