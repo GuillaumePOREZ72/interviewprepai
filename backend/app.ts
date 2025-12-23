@@ -1,0 +1,109 @@
+/**
+ * Express App Configuration
+ * Separated from server.ts to allow testing with supertest
+ */
+import "dotenv/config";
+import express, { Express } from "express";
+import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
+import cookieParser from "cookie-parser";
+import compression from "compression";
+import helmet from "helmet";
+
+import { logger } from "./config/logger.js";
+import limiter from "./config/rateLimiter.js";
+import authRoutes from "./routes/authRoutes.js";
+import sessionRoutes from "./routes/sessionRoutes.js";
+import questionRoutes from "./routes/questionRoutes.js";
+import { protect } from "./middlewares/authMiddleware.js";
+import {
+  generateConceptExplanation,
+  generateInterviewQuestions,
+} from "./controllers/aiController.js";
+
+/**
+ * Constants
+ */
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const NODE_ENV = process.env.NODE_ENV || "development";
+
+/**
+ * Create and configure Express app
+ */
+export const createApp = (): Express => {
+  const app: Express = express();
+
+  // CORS configuration
+  const corsOptions: cors.CorsOptions = {
+    origin(origin, callback) {
+      if (NODE_ENV === "development" || NODE_ENV === "test" || !origin) {
+        callback(null, true);
+      } else {
+        const whitelist = process.env.WHITELIST_ORIGINS?.split(",") || [];
+        if (whitelist.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error(`CORS error: ${origin} is not allowed by CORS`));
+          logger.warn(`CORS error: ${origin} is not allowed by CORS`);
+        }
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  };
+  app.use(cors(corsOptions));
+
+  // Middlewares
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use(cookieParser());
+
+  // Compression for responses larger than 1KB
+  app.use(
+    compression({
+      threshold: 1024,
+    })
+  );
+
+  // Security headers with relaxed CSP for development/test
+  app.use(
+    helmet({
+      crossOriginResourcePolicy: { policy: "cross-origin" },
+      contentSecurityPolicy: NODE_ENV === "production" ? undefined : false,
+    })
+  );
+
+  // Apply rate limiting middleware (skip in test environment)
+  if (NODE_ENV !== "test") {
+    app.use(limiter);
+  }
+
+  // Health check endpoint
+  app.get("/", (req, res) => {
+    res.json({
+      message: "Interview Prep AI Backend is running.",
+      version: "v1",
+      status: "healthy",
+    });
+  });
+
+  // Serve uploads folder
+  app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+  // API Routes
+  app.use("/api/auth", authRoutes);
+  app.use("/api/sessions", sessionRoutes);
+  app.use("/api/questions", questionRoutes);
+  app.use("/api/ai/generate-questions", protect, generateInterviewQuestions);
+  app.use("/api/ai/generate-explanation", protect, generateConceptExplanation);
+
+  return app;
+};
+
+// Export a default instance for backward compatibility
+const app = createApp();
+export default app;
+
