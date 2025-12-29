@@ -1,7 +1,7 @@
 # 🏛️ InterviewPrep AI - Architectural Masterplan
 
 > **Status:** Active Development
-> **Version:** 1.1.0
+> **Version:** 1.2.0
 > **Date:** December 29, 2025
 
 ## 1. 🔭 Vision & Core Philosophy
@@ -36,24 +36,24 @@ The system follows a **Client-Server** architecture with a decoupled AI service 
 
 ```mermaid
 graph TD
-    User[👤 User] -->|HTTPS| Client[🖥️ Frontend (React 19)]
-    Client -->|REST API| API[🛡️ Backend API (Express v5)]
+User[User] -->|HTTPS| Client[Frontend_React19]
+Client -->|REST API| API[BackendAPI_Expressv5]
 
-    subgraph "Backend Services"
-        API -->|Auth| AuthC[Auth Controller]
-        API -->|Business Logic| SessC[Session Controller]
-        API -->|Inference| AIC[AI Controller]
-    end
+subgraph Backend_Services
+    API -->|Auth| AuthC[Auth_Controller]
+    API -->|Business Logic| SessC[Session_Controller]
+    API -->|Inference| AIC[AI_Controller]
+end
 
-    subgraph "Data Persistence"
-        AuthC -->|Read/Write| DB[(MongoDB)]
-        SessC -->|Read/Write| DB
-    end
+subgraph Data_Persistence
+    AuthC -->|Read/Write| DB[(MongoDB)]
+    SessC -->|Read/Write| DB
+end
 
-    subgraph "External AI Cloud"
-        AIC -->|JSON Prompt| Groq[⚡ Groq API (Llama/Mixtral)]
-        Groq -->|Structured JSON| AIC
-    end
+subgraph External_AI_Cloud
+    AIC -->|JSON Prompt| Groq[GroqAPI_LlamaMixtral]
+    Groq -->|Structured JSON| AIC
+end
 ```
 
 ---
@@ -230,7 +230,22 @@ interviewprepai/
     │   ├── context/              # Global State (Theme, User)
     │   ├── hooks/                # Custom Logic (useUser)
     │   ├── pages/                # Route Views
-    │   └── utils/                # API Clients (axiosInstance) & Helpers
+    │   ├── utils/                # API Clients (axiosInstance) & Helpers
+    │   │
+    │   └── tests/                # 🧪 Frontend Test Suite
+    │       ├── setup.ts          # Jest setup with jest-dom
+    │       ├── helpers/
+    │       │   └── testUtils.tsx # Test utilities & wrappers
+    │       ├── __mocks__/
+    │       │   └── axiosMock.ts  # Axios mock for API calls
+    │       └── unit/             # Unit tests
+    │           ├── components/   # QuestionCard tests
+    │           ├── context/      # UserContext tests
+    │           ├── hooks/        # useUser tests
+    │           ├── pages/        # Login, CreateSessionForm tests
+    │           └── utils/        # axiosInstance tests
+    │
+    ├── jest.config.js            # Jest configuration
     └── vite.config.ts            # Build Configuration
 ```
 
@@ -240,7 +255,9 @@ interviewprepai/
 
 ### **8.1 Test Stack**
 
-The backend features a comprehensive test suite built with modern testing tools:
+The project features comprehensive test suites for both backend and frontend:
+
+**Backend:**
 
 | Tool                      | Purpose                                    |
 | ------------------------- | ------------------------------------------ |
@@ -248,6 +265,15 @@ The backend features a comprehensive test suite built with modern testing tools:
 | **Supertest**             | HTTP assertion library for API testing     |
 | **MongoDB Memory Server** | In-memory MongoDB for isolated tests       |
 | **Nock**                  | HTTP mocking for external API calls (Groq) |
+
+**Frontend:**
+
+| Tool                          | Purpose                                 |
+| ----------------------------- | --------------------------------------- |
+| **Jest**                      | Test runner with ts-jest transform      |
+| **React Testing Library**     | Component testing with user-centric API |
+| **jest-environment-jsdom**    | DOM simulation for React components     |
+| **@testing-library/jest-dom** | Extended DOM assertions                 |
 
 ### **8.2 Test Architecture**
 
@@ -257,8 +283,8 @@ Tests are organized following the **Testing Pyramid** principle:
 graph TB
     subgraph "Testing Pyramid"
         E2E["🔺 E2E Tests<br/>(Future)"]
-        INT["🔶 Integration Tests<br/>45 tests"]
-        UNIT["🟢 Unit Tests<br/>60 tests"]
+        INT["🔶 Integration Tests<br/>Backend: 45 tests"]
+        UNIT["🟢 Unit Tests<br/>Backend: 60 | Frontend: 38"]
     end
 
     style E2E fill:#f9f,stroke:#333,stroke-width:2px
@@ -266,9 +292,12 @@ graph TB
     style UNIT fill:#9f9,stroke:#333,stroke-width:2px
 ```
 
-**Current Coverage: 105 tests (all passing ✅)**
+**Current Coverage: 143 tests total (all passing ✅)**
 
-### **8.3 Unit Tests**
+- Backend: 105 tests (52 unit + 53 integration)
+- Frontend: 38 tests (6 test suites)
+
+### **8.3 Backend Unit Tests**
 
 Unit tests validate individual components in isolation:
 
@@ -280,7 +309,7 @@ Unit tests validate individual components in isolation:
 | **Middleware** | `authMiddleware.test.ts` | 7     | Valid/invalid/expired tokens                    |
 | **Utils**      | `helper.test.ts`         | 16    | JSON parsing, AI response cleaning              |
 
-### **8.4 Integration Tests**
+### **8.4 Backend Integration Tests**
 
 Integration tests validate API endpoints end-to-end:
 
@@ -293,9 +322,22 @@ Integration tests validate API endpoints end-to-end:
 | **Upload**     | `upload.test.ts`      | 4     | `/upload-image` (PNG, JPEG validation)              |
 | **Rate Limit** | `rateLimiter.test.ts` | 6     | Rate limiting behavior, health check exclusion      |
 
-### **8.5 Test Utilities**
+### **8.5 Frontend Unit Tests**
 
-The `testUtils.ts` file provides reusable helpers:
+Frontend tests validate React components, hooks, and context:
+
+| Category       | File                         | Tests | Description                                 |
+| -------------- | ---------------------------- | ----- | ------------------------------------------- |
+| **Context**    | `UserContext.test.tsx`       | 8     | Initial state, updateUser, clearUser, fetch |
+| **Hooks**      | `useUser.test.tsx`           | 5     | Hook contract, error when outside provider  |
+| **Components** | `QuestionCard.test.tsx`      | 10    | Render, expand/collapse, pin, learn more    |
+| **Pages**      | `Login.test.tsx`             | 7     | Form render, validation, auth flow, errors  |
+| **Pages**      | `CreateSessionForm.test.tsx` | 6     | Form fields, validation, submission         |
+| **Utils**      | `axiosInstance.test.ts`      | 5     | Module export, token storage, API paths     |
+
+### **8.6 Test Utilities**
+
+**Backend (`testUtils.ts`):**
 
 ```typescript
 // Create authenticated user for tests
@@ -308,23 +350,33 @@ const session = await createTestSession(userId, token);
 const token = generateTestToken(userId);
 ```
 
-### **8.6 Running Tests**
+**Frontend (`testUtils.tsx`):**
 
-```bash
-# Run all tests
-cd backend && npm test
+```typescript
+// Render component with UserProvider wrapper
+const { result } = renderHook(() => useUser(), { wrapper });
 
-# Run with coverage
-npm run test:coverage
-
-# Run specific test file
-npm test -- --testPathPattern="auth.test"
-
-# Run in watch mode (development)
-npm run test:watch
+// Custom render with all providers
+render(<Login setCurrentPage={mockSetPage} />, { wrapper: AllProviders });
 ```
 
-### **8.7 Test Isolation Strategy**
+### **8.7 Running Tests**
+
+```bash
+# Backend tests (from /backend)
+npm test                              # Run all backend tests
+npm run test:coverage                 # Run with coverage report
+npm test -- --testPathPattern="auth"  # Run specific test file
+npm run test:watch                    # Watch mode for TDD
+
+# Frontend tests (from /frontend/interview-prep-ai)
+npm test                              # Run all frontend tests
+npm test -- --coverage                # Run with coverage report
+npm test -- --watch                   # Watch mode for TDD
+npm test -- QuestionCard              # Run specific test file
+```
+
+### **8.8 Test Isolation Strategy**
 
 Each test file operates in complete isolation:
 
