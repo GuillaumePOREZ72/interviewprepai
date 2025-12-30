@@ -142,6 +142,10 @@
     "years": "{{count}} An(s)",
     "updated": "Mis à jour le {{date}}"
   },
+  "question": {
+    "badge": "Q",
+    "learnMore": "En savoir plus"
+  },
   "profile": {
     "userAvatar": "Avatar utilisateur"
   },

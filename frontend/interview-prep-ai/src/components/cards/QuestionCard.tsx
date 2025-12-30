@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { LuChevronDown, LuPin, LuPinOff, LuSparkles } from "react-icons/lu";
 import AIResponsePreview from "../../pages/interviewPrep/components/AIResponsePreview";
+import { useTranslation } from "react-i18next";
 
 interface QuestionCardProps {
   question: string;
@@ -17,6 +18,7 @@ const QuestionCard = ({
   isPinned,
   onTogglePin,
 }: QuestionCardProps) => {
+  const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [height, setHeight] = useState<number>(0);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -39,7 +41,7 @@ const QuestionCard = ({
       <div className="flex items-start justify-between cursor-pointer">
         <div className="flex items-center gap-3 flex-1" onClick={toggleExpand}>
           <div className="shrink-0 w-8 h-8 bg-linear-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/50 dark:to-purple-900/50 rounded-lg flex items-center justify-center mt-0.5">
-            <span className="text-sm font-bold text-primary">Q</span>
+            <span className="text-sm font-bold text-primary">{t("question.badge")}</span>
           </div>
           <h3
             className="text-sm md:text-base font-medium text-text-primary dark:text-text-tertiary leading-relaxed flex-1"
@@ -85,7 +87,7 @@ const QuestionCard = ({
               }}
             >
               <LuSparkles className="w-3.5 h-3.5" />
-              <span className="hidden md:inline">Learn More</span>
+              <span className="hidden md:inline">{t("question.learnMore")}</span>
             </button>
           </div>
 

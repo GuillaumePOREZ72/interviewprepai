@@ -108,11 +108,7 @@ const Dashboard = () => {
                   experience={data.experience}
                   questions={data.questions.length}
                   description={data.description}
-                  lastUpdated={
-                    data.updatedAt
-                      ? moment(data.updatedAt).format("Do MMM YYYY")
-                      : ""
-                  }
+                  lastUpdated={data.updatedAt || null}
                   onSelect={() => navigate(`/interview-prep/${data._id}`)}
                   onDelete={() => setOpenDeleteAlert({ open: true, data })}
                 />

@@ -142,6 +142,10 @@
     "years": "{{count}} Year(s)",
     "updated": "Updated {{date}}"
   },
+  "question": {
+    "badge": "Q",
+    "learnMore": "Learn More"
+  },
   "profile": {
     "userAvatar": "User avatar"
   },

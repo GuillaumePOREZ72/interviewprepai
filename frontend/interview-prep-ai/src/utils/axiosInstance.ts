@@ -43,6 +43,8 @@ axiosInstance.interceptors.request.use(
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
+    const language = localStorage.getItem("i18nextLng") || "en";
+    (config.headers as any)["Accept-Language"] = language;
     return config;
   },
   (error) => {

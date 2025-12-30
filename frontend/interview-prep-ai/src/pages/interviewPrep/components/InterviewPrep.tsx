@@ -163,11 +163,7 @@ const InterviewPrep = () => {
         experience={sessionData.experience}
         questions={sessionData.questions.length}
         description={sessionData.description}
-        lastUpdated={
-          sessionData.updatedAt
-            ? moment(sessionData.updatedAt).format("Do MMM YYYY")
-            : ""
-        }
+        lastUpdated={sessionData.updatedAt || null}
       />
 
       <div className="container mx-auto pt-4 pb-4 px-4 md:px-0">

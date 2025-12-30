@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { LuTrash2, LuCalendar, LuMessageSquare } from "react-icons/lu";
 import { getInitials } from "../../utils/helper";
+import moment from "moment";
 
 interface SummaryCardProps {
   role: string;
@@ -8,7 +9,7 @@ interface SummaryCardProps {
   experience: number;
   questions: number;
   description: string;
-  lastUpdated: string;
+  lastUpdated?: string | null;
   onSelect: () => void;
   onDelete: () => void;
 }
@@ -24,6 +25,8 @@ const SummaryCard = ({
   onDelete,
 }: SummaryCardProps) => {
   const { t } = useTranslation();
+
+  const formattedDate = lastUpdated ? moment(lastUpdated).format("LL") : "";
 
   return (
     <div
@@ -83,7 +86,7 @@ const SummaryCard = ({
         {/* Last updated */}
         <div className="flex items-center gap-1.5 text-xs text-text-secondary pt-3 border-t border-border-primary">
           <LuCalendar className="w-3.5 h-3.5" />
-          {t("sessionCard.updated", { date: lastUpdated })}
+          {t("sessionCard.updated", { date: formattedDate })}
         </div>
       </div>
     </div>

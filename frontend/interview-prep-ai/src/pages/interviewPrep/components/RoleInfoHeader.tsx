@@ -5,13 +5,15 @@ import {
   LuCalendar,
 } from "react-icons/lu";
 import StatBadge from "./StatBadge";
+import { useTranslation } from "react-i18next";
+import moment from "moment";
 interface RoleInfoHeaderProps {
   role: string;
   topicsToFocus: string;
   experience: number;
   questions: number;
   description?: string;
-  lastUpdated: string;
+  lastUpdated: string | null;
 }
 
 const RoleInfoHeader = ({
@@ -21,6 +23,10 @@ const RoleInfoHeader = ({
   questions,
   lastUpdated,
 }: RoleInfoHeaderProps) => {
+  const { t } = useTranslation();
+
+  const formattedDate = lastUpdated ? moment(lastUpdated).format("LL") : "";
+
   return (
     <div className="relative border-b border-border-primary bg-bg-secondary overflow-hidden transition-colors duration-300">
       {/* Grid Pattern Overlay */}
@@ -56,15 +62,15 @@ const RoleInfoHeader = ({
           <div className="flex flex-wrap gap-3">
             <StatBadge
               icon={<LuClock className="w-4 h-4 text-secondary" />}
-              label={`${experience} ${experience === 1 ? "Year" : "Years"}`}
+              label={t("sessionCard.years", { count: experience })}
             />
             <StatBadge
               icon={<LuMessageSquare className="w-4 h-4 text-primary" />}
-              label={`${questions} Q&A`}
+              label={t("sessionCard.questions", { count: questions })}
             />
             <StatBadge
               icon={<LuCalendar className="w-4 h-4 text-accent" />}
-              label={`Updated ${lastUpdated}`}
+              label={lastUpdated ? t("sessionCard.updated", { date: formattedDate }) : ""}
             />
           </div>
         </div>
