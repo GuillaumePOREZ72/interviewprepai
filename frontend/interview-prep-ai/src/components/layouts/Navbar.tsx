@@ -1,9 +1,12 @@
+import { useTranslation } from "react-i18next";
 import ProfileInfoCard from "../cards/ProfileInfoCard";
 import { Link } from "react-router-dom";
 import { LuSparkles, LuSun, LuMoon } from "react-icons/lu";
 import { useTheme } from "../../hooks/useTheme";
+import LanguageSwitcher from "../LanguageSwitcher";
 
 const Navbar = () => {
+  const { t } = useTranslation();
   const { theme, setTheme } = useTheme();
 
   const toggleTheme = () => {
@@ -18,15 +21,16 @@ const Navbar = () => {
             <LuSparkles className="text-white text-lg" />
           </div>
           <h2 className="text-lg md:text-xl font-bold text-text-primary leading-5">
-            Interview Trainer <span className="gradient-text-purple">AI</span>
+            {t("app.name")} <span className="gradient-text-purple">AI</span>
           </h2>
         </Link>
 
         <div className="flex items-center gap-4">
+          <LanguageSwitcher />
           <button
             onClick={toggleTheme}
             className="p-2 rounded-full hover:bg-bg-secondary text-text-secondary hover:text-primary transition-all cursor-pointer"
-            aria-label="Toggle theme"
+            aria-label={t("nav.toggleTheme")}
           >
             {theme === "dark" ? (
               <LuSun className="text-xl text-text-tertiary" />

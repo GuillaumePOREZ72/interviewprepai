@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import HERO_IMG from "../assets/hero-img.png";
 import { APP_FEATURES } from "../utils/data";
 import { useNavigate } from "react-router-dom";
@@ -10,10 +11,12 @@ import { useUser } from "../hooks/useUser";
 import ProfileInfoCard from "../components/cards/ProfileInfoCard";
 import { useTheme } from "../hooks/useTheme";
 import { LuSun, LuMoon } from "react-icons/lu";
+import LanguageSwitcher from "../components/LanguageSwitcher";
 
 type AuthPage = "login" | "signup";
 
 const LandingPage = () => {
+  const { t } = useTranslation();
   const { user } = useUser();
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
@@ -44,13 +47,14 @@ const LandingPage = () => {
           {/* Header */}
           <header className="flex justify-between items-center mb-16">
             <div className="text-xl text-text-primary font-bold">
-              Interview Trainer AI
+              {t("app.name")}
             </div>
             <div className="flex items-center gap-4">
+              <LanguageSwitcher />
               <button
                 onClick={toggleTheme}
                 className="p-2 rounded-full hover:bg-bg-secondary text-text-secondary hover:text-primary transition-all cursor-pointer"
-                aria-label="Toggle theme"
+                aria-label={t("nav.toggleTheme")}
               >
                 {theme === "dark" ? (
                   <LuSun className="text-xl text-text-tertiary" />
@@ -65,7 +69,7 @@ const LandingPage = () => {
                   className="bg-linear-to-r from-primary to-secondary text-sm font-semibold text-white px-7 py-2.5 rounded-full hover:shadow-lg hover:shadow-primary/30 hover:scale-[1.02] border border-indigo-400/30 transition-all duration-200 cursor-pointer"
                   onClick={() => setOpenAuthModal(true)}
                 >
-                  Login / Sign Up
+                  {t("nav.login")}
                 </button>
               )}
             </div>
@@ -76,29 +80,27 @@ const LandingPage = () => {
             <div className="w-full md:w-1/2 pr-4 mb-8 md:mb-0">
               <div className="flex items-center justify-left mb-4">
                 <div className="flex items-center gap-2 text-[13px] text-indigo-700 dark:text-indigo-300 font-semibold bg-indigo-100 dark:bg-indigo-900/50 px-3 py-1.5 rounded-full border border-indigo-200 dark:border-indigo-700">
-                  <LuSparkles /> Powered by AI
+                  <LuSparkles /> {t("app.tagline")}
                 </div>
               </div>
               <h1 className="text-5xl text-text-primary font-semibold mb-6 leading-tight">
-                Master Your Next Interview with <br />
+                {t("landing.hero.title")} <br />
                 <span className="gradient-text-primary bg-size-[200%_200%] animate-text-shine font-bold">
                   {" "}
-                  AI-powered
+                  {t("landing.hero.aiPowered")}
                 </span>{" "}
-                Preparation
+                {t("landing.hero.preparation")}
               </h1>
             </div>
             <div className="w-full md:w-1/2">
               <p className="text-[17px] text-text-secondary text-justify mr-0 md:mr-20 mb-6 leading-relaxed">
-                Generate custom interview questions, get instant explanations,
-                and organize your prep sessions like a pro. Your AI interview
-                coach is ready.
+                {t("landing.hero.description")}
               </p>
               <button
                 className="bg-linear-to-r from-slate-900 to-slate-800 dark:from-slate-100 dark:to-slate-200 text-sm font-semibold text-white dark:text-slate-900 px-8 py-3 rounded-full hover:shadow-xl hover:shadow-slate-900/30 dark:hover:shadow-slate-100/20 hover:scale-[1.02] border border-slate-700 dark:border-slate-300 transition-all duration-200 cursor-pointer"
                 onClick={handleCTA}
               >
-                Get Started
+                {t("landing.hero.cta")}
               </button>
             </div>
           </div>
@@ -120,8 +122,11 @@ const LandingPage = () => {
           <div className="container mx-auto px-4 pt-10 pb-20">
             <section className="mt-5">
               <h2 className="text-3xl font-semibold text-center mb-12 text-text-primary">
-                Your Complete{" "}
-                <span className="gradient-text-purple">Interview</span> Toolkit
+                {t("landing.features.sectionTitle")}{" "}
+                <span className="gradient-text-purple">
+                  {t("landing.features.interview")}
+                </span>{" "}
+                {t("landing.features.toolkit")}
               </h2>
 
               <div className="flex flex-col items-center gap-8">
@@ -136,10 +141,10 @@ const LandingPage = () => {
                         <span className="text-2xl">✨</span>
                       </div>
                       <h3 className="text-base font-semibold mb-3 text-text-primary">
-                        {feature.title}
+                        {t(feature.titleKey)}
                       </h3>
                       <p className="text-text-secondary text-justify leading-relaxed">
-                        {feature.description}
+                        {t(feature.descriptionKey)}
                       </p>
                     </div>
                   ))}
@@ -156,10 +161,10 @@ const LandingPage = () => {
                         <span className="text-2xl">🚀</span>
                       </div>
                       <h3 className="text-base font-semibold mb-3 text-text-primary">
-                        {feature.title}
+                        {t(feature.titleKey)}
                       </h3>
                       <p className="text-text-secondary leading-relaxed">
-                        {feature.description}
+                        {t(feature.descriptionKey)}
                       </p>
                     </div>
                   ))}
@@ -170,11 +175,11 @@ const LandingPage = () => {
         </div>
 
         <div className="text-sm bg-bg-secondary text-text-secondary text-center p-5 mt-5 border-t border-border-primary">
-          Built by a developer, for developers. Good luck! 🚀
+          {t("landing.footer")}
         </div>
       </div>
       <Modal
-        title="Welcome to Interview Trainer AI"
+        title={t("auth.modal.title")}
         isOpen={openAuthModal}
         onClose={() => {
           setOpenAuthModal(false);

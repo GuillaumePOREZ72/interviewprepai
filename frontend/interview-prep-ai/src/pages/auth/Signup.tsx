@@ -1,5 +1,6 @@
 import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Input from "../../components/inputs/Input";
 import ProfilePhotoSelector from "../../components/inputs/ProfilePhotoSelector";
 import { validateEmail } from "../../utils/helper";
@@ -16,6 +17,7 @@ interface SignupProps {
 }
 
 const Signup = ({ setCurrentPage }: SignupProps) => {
+  const { t } = useTranslation();
   const [profilePic, setProfilePic] = useState<File | null>(null);
   const [fullName, setFullName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -33,17 +35,17 @@ const Signup = ({ setCurrentPage }: SignupProps) => {
     let profileImageUrl = "";
 
     if (!fullName) {
-      setError("Please enter full name");
+      setError(t("validation.fullNameRequired"));
       return;
     }
 
     if (!validateEmail(email)) {
-      setError("Please enter a valid email address.");
+      setError(t("validation.invalidEmail"));
       return;
     }
 
     if (!password) {
-      setError("Please enter the password");
+      setError(t("validation.passwordRequired"));
       return;
     }
 
@@ -79,7 +81,7 @@ const Signup = ({ setCurrentPage }: SignupProps) => {
       if (axiosError.response?.data.message) {
         setError(axiosError.response.data.message);
       } else {
-        setError("Something went wrong. Please try again.");
+        setError(t("errors.generic"));
       }
     } finally {
       setIsLoading(false);
@@ -93,11 +95,11 @@ const Signup = ({ setCurrentPage }: SignupProps) => {
         <div className="w-10 h-10 bg-linear-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
           <LuSparkles className="text-white text-xl" />
         </div>
-        <h3 className="text-2xl font-bold text-slate-900">Create Account</h3>
+        <h3 className="text-2xl font-bold text-slate-900">
+          {t("auth.signup.title")}
+        </h3>
       </div>
-      <p className="text-sm text-slate-600 mb-8">
-        Start your interview preparation journey today
-      </p>
+      <p className="text-sm text-slate-600 mb-8">{t("auth.signup.subtitle")}</p>
 
       <form onSubmit={handleSignup} className="space-y-1">
         <ProfilePhotoSelector image={profilePic} setImage={setProfilePic} />
@@ -106,24 +108,24 @@ const Signup = ({ setCurrentPage }: SignupProps) => {
           <Input
             value={fullName}
             onChange={({ target }) => setFullName(target.value)}
-            label="Full Name"
-            placeholder="John Doe"
+            label={t("auth.signup.fullName")}
+            placeholder={t("auth.signup.fullNamePlaceholder")}
             type="text"
           />
 
           <Input
             value={email}
             onChange={({ target }) => setEmail(target.value)}
-            label="Email Address"
-            placeholder="johndoe@example.com"
+            label={t("auth.signup.email")}
+            placeholder={t("auth.signup.emailPlaceholder")}
             type="text"
           />
 
           <Input
             value={password}
             onChange={({ target }) => setPassword(target.value)}
-            label="Password"
-            placeholder="Minimum 8 characters"
+            label={t("auth.signup.password")}
+            placeholder={t("auth.signup.passwordPlaceholder")}
             type="password"
           />
         </div>
@@ -135,18 +137,17 @@ const Signup = ({ setCurrentPage }: SignupProps) => {
         )}
 
         <button type="submit" className="btn-primary mt-6" disabled={isLoading}>
-          {" "}
-          {isLoading ? "Creating Account..." : "Create Account"}
+          {isLoading ? t("auth.signup.creating") : t("auth.signup.submit")}
         </button>
 
         <p className="text-sm text-slate-600 text-center mt-6">
-          Already have an account?{" "}
+          {t("auth.signup.hasAccount")}{" "}
           <button
             type="button"
             className="font-semibold gradient-text-purple hover:underline cursor-pointer"
             onClick={() => setCurrentPage("login")}
           >
-            Sign In
+            {t("auth.signup.loginLink")}
           </button>
         </p>
       </form>

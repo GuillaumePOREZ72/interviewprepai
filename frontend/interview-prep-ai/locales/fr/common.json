@@ -1,0 +1,162 @@
+{
+  "app": {
+    "name": "Interview Trainer",
+    "tagline": "Propulsé par l'IA"
+  },
+  "nav": {
+    "login": "Connexion / Inscription",
+    "dashboard": "Tableau de bord",
+    "toggleTheme": "Changer le thème",
+    "logout": "Déconnexion"
+  },
+  "landing": {
+    "hero": {
+      "title": "Maîtrisez votre prochain entretien avec une",
+      "aiPowered": "préparation",
+      "preparation": "assistée par l'IA",
+      "description": "Générez des questions d'entretien personnalisées, obtenez des explications instantanées et organisez vos sessions de préparation comme un pro. Votre coach d'entretien IA est prêt.",
+      "cta": "Commencer"
+    },
+    "features": {
+      "sectionTitle": "Votre boîte à outils",
+      "interview": "d'entretien",
+      "toolkit": "complète"
+    },
+    "footer": "Créé par un développeur, pour les développeurs. Bonne chance ! 🚀"
+  },
+  "features": {
+    "noGenericQuestions": {
+      "title": "Fini les questions génériques",
+      "description": "Obtenez des questions qui correspondent vraiment à votre entretien — adaptées à votre rôle, votre expérience et les domaines techniques dont vous avez besoin."
+    },
+    "learnAtYourSpeed": {
+      "title": "Apprenez à votre rythme",
+      "description": "Révélez les réponses uniquement quand vous êtes prêt. Besoin de plus de contexte ? Demandez des explications détaillées par l'IA instantanément."
+    },
+    "neverLoseTrack": {
+      "title": "Ne perdez jamais le fil",
+      "description": "Épinglez les questions importantes, ajoutez vos propres notes et gardez vos documents de préparation les plus importants au premier plan."
+    },
+    "understandDontMemorize": {
+      "title": "Comprendre, pas mémoriser",
+      "description": "Allez au-delà des simples réponses. Obtenez des analyses conceptuelles complètes qui vous aident à vraiment comprendre le sujet."
+    },
+    "allInOnePlace": {
+      "title": "Toute votre préparation en un seul endroit",
+      "description": "Sauvegardez des sessions illimitées, organisez par entretien ou sujet, et accédez à tout votre historique de préparation à tout moment."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Bon retour",
+      "subtitle": "Connectez-vous pour continuer",
+      "email": "Email",
+      "emailPlaceholder": "johndoe@example.com",
+      "password": "Mot de passe",
+      "passwordPlaceholder": "Entrez votre mot de passe (min 8 caractères)",
+      "submit": "Se connecter",
+      "noAccount": "Vous n'avez pas de compte ?",
+      "signupLink": "Inscrivez-vous gratuitement"
+    },
+    "signup": {
+      "title": "Créer un compte",
+      "subtitle": "Commencez votre préparation aux entretiens dès aujourd'hui",
+      "fullName": "Nom complet",
+      "fullNamePlaceholder": "Jean Dupont",
+      "email": "Email",
+      "emailPlaceholder": "johndoe@example.com",
+      "password": "Mot de passe",
+      "passwordPlaceholder": "Choisissez un mot de passe sécurisé (minimum 8 caractères)",
+      "submit": "S'inscrire",
+      "creating": "Création du compte...",
+      "hasAccount": "Vous avez déjà un compte ?",
+      "loginLink": "Connectez-vous"
+    },
+    "modal": {
+      "title": "Bienvenue sur Interview Trainer AI"
+    }
+  },
+  "validation": {
+    "invalidEmail": "Veuillez entrer une adresse e-mail valide.",
+    "passwordRequired": "Veuillez entrer le mot de passe",
+    "fullNameRequired": "Veuillez entrer votre nom complet",
+    "requiredFields": "Veuillez remplir tous les champs obligatoires"
+  },
+  "errors": {
+    "generic": "Une erreur s'est produite. Veuillez réessayer.",
+    "fetchSessions": "Échec de la récupération des sessions. Veuillez réessayer.",
+    "deleteSession": "Échec de la suppression de la session. Veuillez réessayer.",
+    "loadSession": "Échec du chargement de la session",
+    "updatePinStatus": "Échec de la mise à jour du statut d'épingle",
+    "generateExplanation": "Une erreur s'est produite lors de la génération de l'explication.",
+    "addQuestions": "Une erreur s'est produite lors de l'ajout de questions."
+  },
+  "success": {
+    "sessionDeleted": "Session supprimée avec succès !",
+    "pinStatusUpdated": "Statut d'épingle de la question mis à jour",
+    "questionsAdded": "Questions ajoutées !"
+  },
+  "dashboard": {
+    "title": "Vos sessions",
+    "sessions": "d'entretien",
+    "emptySubtitle": "Commencez par créer votre première session de préparation",
+    "subtitle": "Vous avez {{count}} session(s) active(s)",
+    "deleteSuccess": "Session supprimée avec succès !",
+    "newSession": "Nouvelle session",
+    "empty": {
+      "title": "Aucune session pour le moment",
+      "description": "Créez votre première session de préparation aux entretiens et commencez à vous entraîner avec des questions générées par l'IA",
+      "cta": "Créer votre première session"
+    },
+    "deleteModal": {
+      "title": "Supprimer la session",
+      "content": "Êtes-vous sûr de vouloir supprimer cette session ? Cette action est irréversible et toutes les questions associées seront définitivement supprimées."
+    }
+  },
+  "createSession": {
+    "title": "Créer une nouvelle session",
+    "subtitle": "Parlez-nous de votre rôle cible et nous générerons des questions d'entretien personnalisées pour vous",
+    "role": {
+      "label": "Rôle",
+      "placeholder": "(ex: Développeur Frontend, Designer UI/UX, Développeur Backend, etc.)"
+    },
+    "experience": {
+      "label": "Expérience (années)",
+      "placeholder": "(ex: 1 an, 3 ans, 5+ ans, etc.)"
+    },
+    "topics": {
+      "label": "Sujets à approfondir",
+      "placeholder": "(ex: React, Node.js, MongoDB, etc.)"
+    },
+    "description": {
+      "label": "Description",
+      "optional": "Optionnel",
+      "placeholder": "Objectifs spécifiques ou notes pour cette session"
+    },
+    "submit": "Générer la session d'entretien",
+    "generating": "Génération des questions..."
+  },
+  "sessionCard": {
+    "noDescription": "Aucune description fournie",
+    "questions": "{{count}} Question(s)",
+    "years": "{{count}} An(s)",
+    "updated": "Mis à jour le {{date}}"
+  },
+  "profile": {
+    "userAvatar": "Avatar utilisateur"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "yesDelete": "Oui, supprimer"
+  },
+  "language": {
+    "en": "English",
+    "fr": "Français",
+    "select": "Choisir la langue"
+  }
+}

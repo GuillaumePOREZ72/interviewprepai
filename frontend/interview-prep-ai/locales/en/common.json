@@ -1,0 +1,162 @@
+{
+  "app": {
+    "name": "Interview Trainer",
+    "tagline": "Powered by AI"
+  },
+  "nav": {
+    "login": "Login / Sign Up",
+    "dashboard": "Dashboard",
+    "toggleTheme": "Toggle theme",
+    "logout": "Logout"
+  },
+  "landing": {
+    "hero": {
+      "title": "Master Your Next Interview with",
+      "aiPowered": "AI-powered",
+      "preparation": "Preparation",
+      "description": "Generate custom interview questions, get instant explanations, and organize your prep sessions like a pro. Your AI interview coach is ready.",
+      "cta": "Get Started"
+    },
+    "features": {
+      "sectionTitle": "Your Complete",
+      "interview": "Interview",
+      "toolkit": "Toolkit"
+    },
+    "footer": "Built by a developer, for developers. Good luck! 🚀"
+  },
+  "features": {
+    "noGenericQuestions": {
+      "title": "No More Generic Questions",
+      "description": "Get questions that actually match your interview—tailored by role, experience, and specific tech areas you need."
+    },
+    "learnAtYourSpeed": {
+      "title": "Learn at Your Speed",
+      "description": "Reveal answers only when you're ready. Need more context? Request detailed AI explanations instantly."
+    },
+    "neverLoseTrack": {
+      "title": "Never Lose Track",
+      "description": "Pin critical questions, add your own insights, and keep your most important prep material front and center."
+    },
+    "understandDontMemorize": {
+      "title": "Understand, Don't Memorize",
+      "description": "Go beyond simple answers. Get comprehensive concept breakdowns that help you actually understand the material."
+    },
+    "allInOnePlace": {
+      "title": "All Your Prep, One Place",
+      "description": "Save unlimited sessions, organize by interview or topic, and access your entire prep history anytime."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to continue",
+      "email": "Email",
+      "emailPlaceholder": "johndoe@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password (min 8 characters)",
+      "submit": "Sign In",
+      "noAccount": "Don't have an account?",
+      "signupLink": "Signup for free"
+    },
+    "signup": {
+      "title": "Create Account",
+      "subtitle": "Start your interview preparation journey today",
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "John Doe",
+      "email": "Email",
+      "emailPlaceholder": "johndoe@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "Choose a strong password (min 8 characters)",
+      "submit": "Sign Up",
+      "creating": "Creating Account...",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Sign In"
+    },
+    "modal": {
+      "title": "Welcome to Interview Trainer AI"
+    }
+  },
+  "validation": {
+    "invalidEmail": "Please enter a valid email address.",
+    "passwordRequired": "Please enter the password",
+    "fullNameRequired": "Please enter full name",
+    "requiredFields": "Please fill all the required fields"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "fetchSessions": "Failed to fetch sessions. Please try again.",
+    "deleteSession": "Failed to delete session. Please try again.",
+    "loadSession": "Failed to load session",
+    "updatePinStatus": "Failed to update pin status",
+    "generateExplanation": "Something went wrong while generating explanation.",
+    "addQuestions": "An error occurred while adding more questions."
+  },
+  "success": {
+    "sessionDeleted": "Session deleted successfully!",
+    "pinStatusUpdated": "Question pin status updated",
+    "questionsAdded": "Added more Q&A!"
+  },
+  "dashboard": {
+    "title": "Your Interview",
+    "sessions": "Sessions",
+    "emptySubtitle": "Start by creating your first interview prep session",
+    "subtitle": "You have {{count}} active session(s)",
+    "deleteSuccess": "Session deleted successfully!",
+    "newSession": "New Session",
+    "empty": {
+      "title": "No sessions yet",
+      "description": "Create your first interview preparation session and start practicing with AI-generated questions",
+      "cta": "Create Your First Session"
+    },
+    "deleteModal": {
+      "title": "Delete Session",
+      "content": "Are you sure you want to delete this session? This action cannot be undone and all associated questions will be permanently removed."
+    }
+  },
+  "createSession": {
+    "title": "Create New Session",
+    "subtitle": "Tell us about your target role and we'll generate personalized interview questions for you",
+    "role": {
+      "label": "Role",
+      "placeholder": "(e.g., Frontend Developer, UI/UX Designer, Backend Developer, etc.)"
+    },
+    "experience": {
+      "label": "Experience (Years)",
+      "placeholder": "(e.g., 1 year, 3 years, 5+ years, etc.)"
+    },
+    "topics": {
+      "label": "Topics to Focus On",
+      "placeholder": "(e.g., React, Node.js, MongoDB, etc.)"
+    },
+    "description": {
+      "label": "Description",
+      "optional": "Optional",
+      "placeholder": "Any specific goals or notes for this session"
+    },
+    "submit": "Create Session",
+    "generating": "Generating Questions..."
+  },
+  "sessionCard": {
+    "noDescription": "No description provided",
+    "questions": "{{count}} Question(s)",
+    "years": "{{count}} Year(s)",
+    "updated": "Updated {{date}}"
+  },
+  "profile": {
+    "userAvatar": "User avatar"
+  },
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "yesDelete": "Yes, Delete"
+  },
+  "language": {
+    "en": "English",
+    "fr": "Français",
+    "select": "Select language"
+  }
+}

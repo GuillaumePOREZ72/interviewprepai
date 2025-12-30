@@ -1,5 +1,6 @@
 import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Input from "../../components/inputs/Input";
 import { validateEmail } from "../../utils/helper";
 import axiosInstance from "../../utils/axiosInstance";
@@ -14,6 +15,7 @@ interface LoginProps {
 }
 
 const Login = ({ setCurrentPage }: LoginProps) => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -25,12 +27,12 @@ const Login = ({ setCurrentPage }: LoginProps) => {
     e.preventDefault();
 
     if (!validateEmail(email)) {
-      setError("Please enter a valid email address.");
+      setError(t("validation.invalidEmail"));
       return;
     }
 
     if (!password) {
-      setError("Please enter the password");
+      setError(t("validation.passwordRequired"));
       return;
     }
 
@@ -57,7 +59,7 @@ const Login = ({ setCurrentPage }: LoginProps) => {
       if (axiosError.response?.data?.message) {
         setError(axiosError.response.data.message);
       } else {
-        setError("Something went wrong. Please try again.");
+        setError(t("errors.generic"));
       }
     }
   };
@@ -69,26 +71,28 @@ const Login = ({ setCurrentPage }: LoginProps) => {
         <div className="w-10 h-10 bg-linear-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
           <LuSparkles className="text-white text-xl" />
         </div>
-        <h3 className="text-2xl font-bold text-slate-900">Welcome Back</h3>
+        <h3 className="text-2xl font-bold text-slate-900">
+          {t("auth.login.title")}
+        </h3>
       </div>
       <p className="text-sm text-slate-600 mt-2 mb-8">
-        Please enter your credentials to continue
+        {t("auth.login.subtitle")}
       </p>
 
       <form onSubmit={handleLogin} className="space-y-1">
         <Input
           value={email}
           onChange={({ target }) => setEmail(target.value)}
-          label="Email Address"
-          placeholder="johndoe@example.com"
+          label={t("auth.login.email")}
+          placeholder={t("auth.login.emailPlaceholder")}
           type="email"
         />
 
         <Input
           value={password}
           onChange={({ target }) => setPassword(target.value)}
-          label="Password"
-          placeholder="Enter your password (min 8 characters)"
+          label={t("auth.login.password")}
+          placeholder={t("auth.login.passwordPlaceholder")}
           type="password"
         />
 
@@ -99,16 +103,16 @@ const Login = ({ setCurrentPage }: LoginProps) => {
         )}
 
         <button type="submit" className="btn-primary mt-6">
-          Sign In
+          {t("auth.login.submit")}
         </button>
         <p className="text-sm text-slate-600 mt-6">
-          Don't have an account?{" "}
+          {t("auth.login.noAccount")}{" "}
           <button
             type="button"
             className="font-semibold gradient-text-purple hover:underline cursor-pointer"
             onClick={() => setCurrentPage("signup")}
           >
-            Signup for free
+            {t("auth.login.signupLink")}
           </button>
         </p>
       </form>

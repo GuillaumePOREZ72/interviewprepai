@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { LuPlus, LuSparkles } from "react-icons/lu";
 import { toast } from "react-hot-toast";
 import moment from "moment";
@@ -18,6 +19,7 @@ interface DeleteAlertState {
 }
 
 const Dashboard = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
@@ -35,7 +37,7 @@ const Dashboard = () => {
       );
       setSessions(response.data);
     } catch (error) {
-      toast.error("Failed to fetch sessions. Please try again.");
+      toast.error(t("errors.fetchSessions"));
     }
   };
 
@@ -43,11 +45,11 @@ const Dashboard = () => {
     if (!sessionData) return;
     try {
       await axiosInstance.delete(API_PATHS.SESSION.DELETE(sessionData!._id));
-      toast.success("Session deleted successfully!");
+      toast.success(t("dashboard.deleteSuccess"));
       setOpenDeleteAlert({ open: false, data: null });
       fetchAllSessions();
     } catch (error) {
-      toast.error("Failed to delete session. Please try again.");
+      toast.error(t("errors.deleteSession"));
     }
   };
 
@@ -63,16 +65,16 @@ const Dashboard = () => {
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-3">
               <h1 className="text-3xl font-bold text-text-primary">
-                Your Interview{" "}
-                <span className="gradient-text-purple">Sessions</span>
+                {t("dashboard.title")}{" "}
+                <span className="gradient-text-purple">
+                  {t("dashboard.sessions")}
+                </span>
               </h1>
             </div>
             <p className="text-text-secondary ml-1">
               {sessions.length === 0
-                ? "Start by creating your first interview prep session"
-                : `You have ${sessions.length} active ${
-                    sessions.length === 1 ? "session" : "sessions"
-                  }`}
+                ? t("dashboard.emptySubtitle")
+                : t("dashboard.subtitle", { count: sessions.length })}
             </p>
           </div>
 
@@ -83,18 +85,17 @@ const Dashboard = () => {
                 <LuSparkles className="text-4xl text-primary" />
               </div>
               <h3 className="text-xl font-semibold text-text-primary mb-2">
-                No sessions yet
+                {t("dashboard.empty.title")}
               </h3>
               <p className="text-text-secondary text-center max-w-md mb-6">
-                Create your first interview preparation session and start
-                practicing with AI-generated questions
+                {t("dashboard.empty.description")}
               </p>
               <button
                 className="btn-small"
                 onClick={() => setOpenCreateModal(true)}
               >
                 <LuPlus className="text-lg" />
-                Create Your First Session
+                {t("dashboard.empty.cta")}
               </button>
             </div>
           ) : (
@@ -127,7 +128,7 @@ const Dashboard = () => {
             onClick={() => setOpenCreateModal(true)}
           >
             <LuPlus className="text-xl" />
-            New Session
+            {t("dashboard.newSession")}
           </button>
         )}
       </div>
@@ -147,11 +148,11 @@ const Dashboard = () => {
       <Modal
         isOpen={openDeleteAlert?.open}
         onClose={() => setOpenDeleteAlert({ open: false, data: null })}
-        title="Delete Session"
+        title={t("dashboard.deleteModal.title")}
       >
         <div className="">
           <DeleteAlertContent
-            content="Are you sure you want to delete this session? This action cannot be undone and all associated questions will be permanently removed."
+            content={t("dashboard.deleteModal.content")}
             onDelete={() => deleteSession(openDeleteAlert.data)}
           />
         </div>

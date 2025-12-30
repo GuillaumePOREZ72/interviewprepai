@@ -1,5 +1,6 @@
 import { useState, FormEvent, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Input from "../../components/inputs/Input";
 import SpinnerLoader from "../../components/loader/SpinnerLoader";
 import axiosInstance from "../../utils/axiosInstance";
@@ -19,6 +20,7 @@ import {
 } from "react-icons/lu";
 
 const CreateSessionForm = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<CreateSessionFormData>({
     role: "",
     experience: "",
@@ -44,7 +46,7 @@ const CreateSessionForm = () => {
     const { role, experience, topicsToFocus } = formData;
 
     if (!role || !experience || !topicsToFocus) {
-      setError("Please fill all the required fields");
+      setError(t("validation.requiredFields"));
       return;
     }
 
@@ -82,7 +84,7 @@ const CreateSessionForm = () => {
       if (axiosError.response?.data?.message) {
         setError(axiosError.response.data.message);
       } else {
-        setError("Something went wrong. Please try again.");
+        setError(t("errors.generic"));
       }
     } finally {
       setIsLoading(false);
@@ -93,25 +95,25 @@ const CreateSessionForm = () => {
       {/* Header */}
       <div className="flex items-center gap-3 mb-3">
         <h3 className="text-2xl font-bold text-slate-900">
-          Create New Session
+          {t("createSession.title")}
         </h3>
       </div>
       <p className="text-sm text-slate-600 mb-6">
-        Tell us about your target role and we'll generate personalized interview
-        questions for you
+        {t("createSession.subtitle")}
       </p>
 
       <form onSubmit={handleCreateSession} className="space-y-4">
         <div>
           <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
             <LuBriefcase className="w-4 h-4 text-primary" />
-            Target Role <span className="text-red-500">*</span>
+            {t("createSession.role.label")}{" "}
+            <span className="text-red-500">*</span>
           </label>
 
           <Input
             value={formData.role}
             onChange={({ target }) => handleChange("role", target.value)}
-            placeholder="(e.g., Frontend Developer, UI/UX Designer, Backend Developer, etc.)"
+            placeholder={t("createSession.role.placeholder")}
             type="text"
           />
         </div>
@@ -119,13 +121,14 @@ const CreateSessionForm = () => {
         <div>
           <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
             <LuClock className="w-4 h-4 text-secondary" />
-            Years of Experience <span className="text-red-500">*</span>
+            {t("createSession.experience.label")}{" "}
+            <span className="text-red-500">*</span>
           </label>
 
           <Input
             value={formData.experience}
             onChange={({ target }) => handleChange("experience", target.value)}
-            placeholder="(e.g., 1 year, 3 years, 5+ years, etc.)"
+            placeholder={t("createSession.experience.placeholder")}
             type="text"
           />
         </div>
@@ -133,7 +136,8 @@ const CreateSessionForm = () => {
         <div>
           <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
             <LuTags className="w-4 h-4 text-accent" />
-            Topics to Focus On <span className="text-red-500">*</span>
+            {t("createSession.topics.label")}{" "}
+            <span className="text-red-500">*</span>
           </label>
 
           <Input
@@ -141,7 +145,7 @@ const CreateSessionForm = () => {
             onChange={({ target }) =>
               handleChange("topicsToFocus", target.value)
             }
-            placeholder="(e.g., React, Node.js, MongoDB, etc.)"
+            placeholder={t("createSession.topics.placeholder")}
             type="text"
           />
         </div>
@@ -149,13 +153,15 @@ const CreateSessionForm = () => {
         <div>
           <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
             <LuFileText className="w-4 h-4 text-slate-500" />
-            Description{" "}
-            <span className="text-slate-400 text-xs">(Optional)</span>
+            {t("createSession.description.label")}{" "}
+            <span className="text-slate-400 text-xs">
+              ({t("createSession.description.optional")})
+            </span>
           </label>
           <Input
             value={formData.description}
             onChange={({ target }) => handleChange("description", target.value)}
-            placeholder="Any specific goals or notes for this session"
+            placeholder={t("createSession.description.placeholder")}
             type="text"
           />
         </div>
@@ -174,11 +180,11 @@ const CreateSessionForm = () => {
         >
           {isLoading ? (
             <>
-              <SpinnerLoader /> Generating Questions...
+              <SpinnerLoader /> {t("createSession.generating")}
             </>
           ) : (
             <>
-              <p>Generate Interview Session</p>
+              <p>{t("createSession.submit")}</p>
             </>
           )}
         </button>
