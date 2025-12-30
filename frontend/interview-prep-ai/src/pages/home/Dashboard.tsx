@@ -12,6 +12,7 @@ import Modal from "../../components/Modal";
 import CreateSessionForm from "./CreateSessionForm";
 import DeleteAlertContent from "../../components/DeleteAlertContent";
 import { Session } from "../../types";
+import LanguageSwitcher from "../../components/LanguageSwitcher";
 
 interface DeleteAlertState {
   open: boolean;
