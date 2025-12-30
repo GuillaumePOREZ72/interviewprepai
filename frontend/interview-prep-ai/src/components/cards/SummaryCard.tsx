@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { LuTrash2, LuCalendar, LuMessageSquare } from "react-icons/lu";
 import { getInitials } from "../../utils/helper";
-import moment from "moment";
+import {formatDate} from "../../utils/formatDate";
 
 interface SummaryCardProps {
   role: string;
@@ -26,7 +26,7 @@ const SummaryCard = ({
 }: SummaryCardProps) => {
   const { t } = useTranslation();
 
-  const formattedDate = lastUpdated ? moment(lastUpdated).format("LL") : "";
+  const formattedDate = formatDate(lastUpdated);
 
   return (
     <div

@@ -6,14 +6,14 @@ import {
 } from "react-icons/lu";
 import StatBadge from "./StatBadge";
 import { useTranslation } from "react-i18next";
-import moment from "moment";
+import {formatDate} from "../../../utils/formatDate";
 interface RoleInfoHeaderProps {
   role: string;
   topicsToFocus: string;
   experience: number;
   questions: number;
   description?: string;
-  lastUpdated: string | null;
+  lastUpdated?: string | null;
 }
 
 const RoleInfoHeader = ({
@@ -25,7 +25,7 @@ const RoleInfoHeader = ({
 }: RoleInfoHeaderProps) => {
   const { t } = useTranslation();
 
-  const formattedDate = lastUpdated ? moment(lastUpdated).format("LL") : "";
+  const formattedDate = formatDate(lastUpdated);
 
   return (
     <div className="relative border-b border-border-primary bg-bg-secondary overflow-hidden transition-colors duration-300">
